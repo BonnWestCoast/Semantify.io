@@ -11,6 +11,7 @@ import {
     LoginSuccess,
     Survey,
     NotFound,
+    SchemaUpload
   } from 'containers';
 
 export default (store) => {
@@ -43,6 +44,7 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="chat" component={Chat}/>
         <Route path="loginSuccess" component={LoginSuccess}/>
+        <Route path="uploadSchema" component={SchemaUpload}/>
       </Route>
 
       { /* Routes */ }
