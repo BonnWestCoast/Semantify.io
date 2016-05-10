@@ -27,13 +27,10 @@ export default class SchemaUpload extends Component {
   }
 
   render() {
-    const {uploaded} = this.props;
     return (
       <div className="container">
         <h1>Schema Upload</h1>
         <Helmet title="SchemaUpload"/>
-
-        
         <UploadSchemaForm onSubmit={this.handleSubmit}/>
       </div>
     );
