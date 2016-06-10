@@ -1,5 +1,7 @@
+const _ = require('lodash');
+
 export default class Ontology {
-  constructor(vowl) {
+  constructor(data) {
     this.ontologyName = '';
     this.triples = [];
     this.nodes = [];
@@ -7,8 +9,7 @@ export default class Ontology {
     this.filter = [];
     this.metrics = [];
     this.id = 0;
-
-    this.parseVowl(vowl);
+    this.parseVowl(data);
   }
 
   /**
@@ -17,7 +18,9 @@ export default class Ontology {
    * @return {[type]}      [description]
    */
   parseVowl(data) {
-    data.each(item => {
+    console.log('start parse');
+    _.each(data, item => {
+      console.log(item);
       const subject = this.extractID(item.subject.nominalValue);
       const predicate = this.extractID(item.predicate.nominalValue);
       const object = this.extractID(item.object.nominalValue);
@@ -28,7 +31,7 @@ export default class Ontology {
       if (subject !== '') {
         this.ontologyName = this.extractOntologyName(item.subject.nominalValue);
         console.log('Extracting the ontology name', this.ontologyName);
-        //options.ontologyNamespace = extractOntologyNamespace(item.subject.nominalValue);
+        // options.ontologyNamespace = extractOntologyNamespace(item.subject.nominalValue);
       }
       this.addEdge(subject, predicate, object, label, filter, interfaceName);
       this.addTriple(subject, predicate, object);
@@ -44,8 +47,7 @@ export default class Ontology {
 
       if (endIndex !== -1) {
         ontologyName = uri.substring(endIndex + 1, uri.length);
-      }
-      else {
+      } else {
         ontologyName = uri;
       }
     }
@@ -59,18 +61,13 @@ export default class Ontology {
 
     if (endIndex !== -1 && startIndex !== -1) {
       ontologyName = uri.substring(startIndex + 1, endIndex);
-    }
-    else {
+    } else {
       if (endIndex === -1) {
         ontologyName = uri.substring(startIndex + 1, uri.length);
       }
     }
 
     return ontologyName;
-  }
-
-  myFindWhere(array, criteria) {
-    return array.find(item => Object.keys(criteria).every(key => item[key] === criteria[key]));
   }
 
   /**
@@ -81,12 +78,11 @@ export default class Ontology {
    * @return {[type]}     [description]
    */
   findPrefix(uri) {
-    const prefix = this.findWhere(
+    const prefix = _.findWhere(
     this.contextArray, {uri: uri});
-    if (Object.keys(prefix).length === 0) {
+    if (_.isEmpty(prefix)) {
       return '';
-    }
-    else {
+    } else {
       return prefix.name;
     }
   }
@@ -100,12 +96,10 @@ export default class Ontology {
       if (item !== undefined) {
         label = this.findPrefix(itemContext) + ':' + pred;
       }
-    }
-    else {
+    } else {
       if (item !== undefined) {
         label = this.ontologyName + ':' + pred;
-      }
-      else {
+      } else {
         label = pred;
       }
     }
