@@ -82,6 +82,9 @@ export default class App extends Component {
                   <NavItem eventKey={1}>Upload a Schema</NavItem>
                 </LinkContainer>
               }
+              <LinkContainer to="/visualizer">
+                <NavItem eventKey={3}>Visualize</NavItem>
+              </LinkContainer>
               {/* no need for this page
                  user && <LinkContainer to="/chat">
                 <NavItem eventKey={1}>Chat</NavItem>

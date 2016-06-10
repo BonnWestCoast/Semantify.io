@@ -11,7 +11,8 @@ import {
     LoginSuccess,
     Survey,
     NotFound,
-    SchemaUpload
+    SchemaUpload,
+    Visualizer
   } from 'containers';
 
 export default (store) => {
@@ -49,6 +50,7 @@ export default (store) => {
 
       { /* Routes */ }
       <Route path="about" component={About}/>
+      <Route path="visualizer" component={Visualizer}/>
       <Route path="login" component={Login}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
