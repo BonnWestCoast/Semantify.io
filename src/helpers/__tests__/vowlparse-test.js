@@ -1,6 +1,5 @@
 import VowlParser from '../VowlParser';
 import {expect} from 'chai';
-//import * as vowl from './src/containers/Visualizer/example.json';
 
 describe('parseVowl', () => {
   before(() => {

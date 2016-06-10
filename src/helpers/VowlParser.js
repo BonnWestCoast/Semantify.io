@@ -16,6 +16,10 @@ export default class VowlParser {
     };
   }
 
+  initializeOntology(vowl) {
+
+  }
+
   /**
    * Get Nodes from vowl file
    * @return {[type]} [description]
