@@ -1,31 +1,49 @@
 var webpack = require('webpack');
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
 
     browsers: ['PhantomJS'],
 
     singleRun: !!process.env.CI,
 
-    frameworks: [ 'mocha' ],
+    frameworks: [ 'mocha', 'fixture' ],
 
     files: [
       './node_modules/phantomjs-polyfill/bind-polyfill.js',
-      'tests.webpack.js'
+      'tests.webpack.js',
+      {
+        pattern: 'fixtures/*',
+        watched: true,
+        served: true,
+        included: true
+      }
     ],
 
     preprocessors: {
-      'tests.webpack.js': [ 'webpack', 'sourcemap' ]
+      'tests.webpack.js': [ 'webpack', 'sourcemap' ],
+      //configure Karma to load all html
+      //and JSON fixture files via those preprocessors:
+      '**/*.html'   : ['html2js'],
+      '**/*.json'   : ['json_fixtures']
+    },
+
+    jsonFixturesPreprocessor: {
+      //setup the karma-json-fixtures-preprocessor plugin
+      variableName: '__json__'
     },
 
     reporters: [ 'mocha' ],
 
     plugins: [
-      require("karma-webpack"),
-      require("karma-mocha"),
-      require("karma-mocha-reporter"),
-      require("karma-phantomjs-launcher"),
-      require("karma-sourcemap-loader")
+      require('karma-webpack'),
+      require('karma-mocha'),
+      require('karma-mocha-reporter'),
+      require('karma-phantomjs-launcher'),
+      require('karma-sourcemap-loader'),
+      require('karma-fixture'),
+      require('karma-html2js-preprocessor'),
+      require('karma-json-fixtures-preprocessor'),
     ],
 
     webpack: {

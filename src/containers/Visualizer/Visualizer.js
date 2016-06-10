@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Graph from './Graph';
+import * as filee from './example.json';
 
 export default class Visualizer extends Component {
   state = {
@@ -9,21 +10,7 @@ export default class Visualizer extends Component {
 
   fetchFile = () => {
     console.log('start fetch file');
-    const textExample = {
-      nodes: [
-          {id: 1, label: 'Node 1'},
-          {id: 2, label: 'Node 2'},
-          {id: 3, label: 'Node 3'},
-          {id: 4, label: 'Node 4'},
-          {id: 5, label: 'Node 5'}
-      ],
-      edges: [
-          {from: 1, to: 2},
-          {from: 1, to: 3},
-          {from: 2, to: 4},
-          {from: 2, to: 5}
-      ]
-    };
+    const textExample = filee;
     console.log(textExample);
     console.log('finish fetch file');
     return textExample;
