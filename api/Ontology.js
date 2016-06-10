@@ -9,6 +9,7 @@ export default class Ontology {
     this.filter = [];
     this.metrics = [];
     this.id = 0;
+
     this.parseVowl(data);
   }
 
@@ -19,19 +20,40 @@ export default class Ontology {
    */
   parseVowl(data) {
     console.log('start parse');
-    _.each(data, item => {
-      console.log(item);
-      const subject = this.extractID(item.subject.nominalValue);
-      const predicate = this.extractID(item.predicate.nominalValue);
-      const object = this.extractID(item.object.nominalValue);
-      const interfaceName = item.object.interfaceName;
-      const filter = '';
-      const label = this.extractLabel(item.predicate.nominalValue, predicate);
+    console.log(data.length);
+    let isSubject = true;
+    let subject = null;
+    let predicate = null;
+    let object = null;
+    let interfaceName = null;
+    let label = null;
+    let filter = '';
+    let ontologyName = '';
+    let context = this.getDefaultContext();
+    console.log('conl ' + context.length);
+    let contextArr = _.map(context, (item) => {
+      return {
+        name: item.name,
+        uri: item.uri
+      }
+    });
 
-      if (subject !== '') {
-        this.ontologyName = this.extractOntologyName(item.subject.nominalValue);
+    // console.log(data);
+    _.each(data, item => {
+      subject = this.extractId(item.subject.nominalValue);
+      predicate = this.extractId(item.predicate.nominalValue);
+      object = this.extractId(item.object.nominalValue);
+      interfaceName = item.object.interfaceName;
+      label = this.extractLabel(item.predicate.nominalValue,
+        predicate,
+        ontologyName,
+        contextArr);
+      console.log('5');
+      if (subject !== '' && isSubject) {
+        ontologyName = this.extractOntologyName(item.subject.nominalValue);
         console.log('Extracting the ontology name', this.ontologyName);
-        // options.ontologyNamespace = extractOntologyNamespace(item.subject.nominalValue);
+        // options.ontologyNamespace = this.extractOntologyNamespace(item.subject.nominalValue);
+        isSubject = false;
       }
       this.addEdge(subject, predicate, object, label, filter, interfaceName);
       this.addTriple(subject, predicate, object);
@@ -40,7 +62,9 @@ export default class Ontology {
   }
 
   extractId(uri) {
+    console.log('start extraction');
     const item = uri.split('#')[1];
+    console.log(item);
     let ontologyName = '';
     if (!item) {
       const endIndex = uri.lastIndexOf('/');
@@ -77,9 +101,11 @@ export default class Ontology {
    * @param  {[type]} uri [description]
    * @return {[type]}     [description]
    */
-  findPrefix(uri) {
-    const prefix = _.findWhere(
-    this.contextArray, {uri: uri});
+  findPrefix(uri, context) {
+    console.log('findPref for '+ uri);
+    const prefix = _.find(
+      context, ['uri', uri]);
+    console.log('show context');
     if (_.isEmpty(prefix)) {
       return '';
     } else {
@@ -87,18 +113,19 @@ export default class Ontology {
     }
   }
 
-  extractLabel(uri, pred) {
+  extractLabel(uri, pred, ontName, context) {
+    console.log('extract label');
     const itemContext = uri.split('#')[0];
     const item = uri.split('#')[1];
     let label = '';
 
-    if (this.findPrefix(itemContext) !== '') {
+    if (this.findPrefix(itemContext, context) !== '') {
       if (item !== undefined) {
-        label = this.findPrefix(itemContext) + ':' + pred;
+        label = this.findPrefix(itemContext, context) + ':' + pred;
       }
     } else {
       if (item !== undefined) {
-        label = this.ontologyName + ':' + pred;
+        label = ontName + ':' + pred;
       } else {
         label = pred;
       }
@@ -168,25 +195,27 @@ export default class Ontology {
     this.metrics = [];
   }
 
-  static defaultContext = [
-    {name: 'rdf', uri: 'http://www.w3.org/1999/02/22-rdf-syntax-ns'},
-    {name: 'rdfs', uri: 'http://www.w3.org/2000/01/rdf-schema'},
-    {name: 'owl', uri: 'http://www.w3.org/2002/07/owl'},
-    {name: 'xsd', uri: 'http://www.w3.org/2001/XMLSchema'},
-    {name: 'dcterms', uri: 'http://purl.org/dc/terms/'},
-    {name: 'foaf', uri: 'http://xmlns.com/foaf/0.1/'},
-    {name: 'cal', uri: 'http://www.w3.org/2002/12/cal/ical'},
-    {name: 'vcard', uri: 'http://www.w3.org/2006/vcard/ns '},
-    {name: 'geo', uri: 'http://www.w3.org/2003/01/geo/wgs84_pos'},
-    {name: 'cc', uri: 'http://creativecommons.org/ns'},
-    {name: 'sioc', uri: 'http://rdfs.org/sioc/ns'},
-    {name: 'doap', uri: 'http://usefulinc.com/ns/doap'},
-    {name: 'com', uri: 'http://purl.org/commerce'},
-    {name: 'ps', uri: 'http://purl.org/payswarm'},
-    {name: 'gr', uri: 'http://purl.org/goodrelations/v1'},
-    {name: 'sig', uri: 'http://purl.org/signature'},
-    {name: 'ccard', uri: 'http://purl.org/commerce/creditcard'}
-  ];
+  getDefaultContext() {
+    return [
+      {name: 'rdf', uri: 'http://www.w3.org/1999/02/22-rdf-syntax-ns'},
+      {name: 'rdfs', uri: 'http://www.w3.org/2000/01/rdf-schema'},
+      {name: 'owl', uri: 'http://www.w3.org/2002/07/owl'},
+      {name: 'xsd', uri: 'http://www.w3.org/2001/XMLSchema'},
+      {name: 'dcterms', uri: 'http://purl.org/dc/terms/'},
+      {name: 'foaf', uri: 'http://xmlns.com/foaf/0.1/'},
+      {name: 'cal', uri: 'http://www.w3.org/2002/12/cal/ical'},
+      {name: 'vcard', uri: 'http://www.w3.org/2006/vcard/ns '},
+      {name: 'geo', uri: 'http://www.w3.org/2003/01/geo/wgs84_pos'},
+      {name: 'cc', uri: 'http://creativecommons.org/ns'},
+      {name: 'sioc', uri: 'http://rdfs.org/sioc/ns'},
+      {name: 'doap', uri: 'http://usefulinc.com/ns/doap'},
+      {name: 'com', uri: 'http://purl.org/commerce'},
+      {name: 'ps', uri: 'http://purl.org/payswarm'},
+      {name: 'gr', uri: 'http://purl.org/goodrelations/v1'},
+      {name: 'sig', uri: 'http://purl.org/signature'},
+      {name: 'ccard', uri: 'http://purl.org/commerce/creditcard'}
+    ];
+  }
 
 }
 

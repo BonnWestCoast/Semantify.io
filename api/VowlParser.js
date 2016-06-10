@@ -16,10 +16,7 @@ export default class VowlParser {
    * @return {Object}          [vis.js format object]
    */
   parse(path, callback) {
-    console.log('start fetch file');
     const ontology = fs.readFileSync(__dirname + path).toString();
-    console.log('success fetch file');
-    //const ontObj = JSON.parse(ontology);
 
     rdfstore.create((err, store) => {
       store.load('text/turtle', ontology, 'graph', (err, results) => {
@@ -40,6 +37,7 @@ export default class VowlParser {
                   nodes: this.getNodes(ont),
                   edges: this.getEdges(ont)
                 };
+                console.log('finished ontology parse');
                 callback(finalObj);
               }
             }
@@ -78,14 +76,6 @@ export default class VowlParser {
       }
       return true;
     });
-    // return triplesAndObjects.filter((item, index) => {
-    //   for (index = index + 1; index < triplesAndObjects.length; index += 1) {
-    //     if (_.isEqual(item, triplesAndObjects[index])) {
-    //       return false;
-    //     }
-    //   }
-    //   return true;
-    // });
   }
 
   /**
