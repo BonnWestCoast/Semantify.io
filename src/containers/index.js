@@ -8,4 +8,5 @@ export LoginSuccess from './LoginSuccess/LoginSuccess';
 export Survey from './Survey/Survey';
 export NotFound from './NotFound/NotFound';
 export SchemaUpload from './SchemaUpload/SchemaUpload';
+export SchemasList from './SchemasList/SchemasList';
 export Visualizer from './Visualizer/Visualizer';
