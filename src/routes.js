@@ -12,8 +12,9 @@ import {
     Survey,
     NotFound,
     SchemaUpload,
-    SchemasList
     Visualizer
+    SchemasList,
+    Schema
   } from 'containers';
 
 export default (store) => {
@@ -48,6 +49,7 @@ export default (store) => {
         <Route path="loginSuccess" component={LoginSuccess}/>
         <Route path="uploadSchema" component={SchemaUpload}/>
         <Route path="schemasList" component={SchemasList}/>
+        <Route path="schema/:id" component={Schema}/>
       </Route>
 
       { /* Routes */ }

@@ -9,4 +9,5 @@ export Survey from './Survey/Survey';
 export NotFound from './NotFound/NotFound';
 export SchemaUpload from './SchemaUpload/SchemaUpload';
 export SchemasList from './SchemasList/SchemasList';
+export Schema from './Schema/Schema'
 export Visualizer from './Visualizer/Visualizer';

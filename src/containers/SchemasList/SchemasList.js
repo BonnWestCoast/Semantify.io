@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router'
 
 import {list as getList} from 'redux/selectors/schemasList'
 
@@ -14,7 +15,7 @@ export default class SchemasList extends Component {
       <div className="container">
         <h1>Schemas List</h1>
         <ul>
-          {this.props.list.map(it => <li key={it.id}>{it.name}</li>)}
+          {this.props.list.map(it => <li key={it.id}><Link to={`/schema/${it.id}`}>{it.name}</Link></li>)}
         </ul>
       </div>
     )
