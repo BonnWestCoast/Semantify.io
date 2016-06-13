@@ -37,7 +37,10 @@ export default class VowlParser {
                   nodes: this.getNodes(ont),
                   edges: this.getEdges(ont)
                 };
-                console.log('finished ontology parse');
+                // fs.writeFile(_dirname + './../fixtures/owl/res.json', finalObj, (err) => {
+                //   console.log('finished writing');
+                // });
+                console.log(finalObj.edges);
                 callback(finalObj);
               }
             }
