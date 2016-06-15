@@ -1,10 +1,16 @@
+// Alexey Karpov
+// 13.06.2016
+
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 
+// components
 import {ListGroup, ListGroupItem} from 'react-bootstrap'
 
+// selectors
 import {schema as getSchema} from 'redux/selectors/schemasList'
 
+// the class renders previously uploaded files
 @connect((state, {params: {id}}) => ({schema: getSchema(state, id)}))
 export default class Schema extends Component {
   static propTypes = {
@@ -12,6 +18,7 @@ export default class Schema extends Component {
     params: PropTypes.object.isRequired
   }
 
+  // if the required object exists than render() use this method
   content() {
     let {schema} = this.props
 
@@ -23,6 +30,7 @@ export default class Schema extends Component {
     )
   }
 
+  // this methods is used by render() if the required object has not found
   notFound() {
     let id = this.props.params.id
     return (
