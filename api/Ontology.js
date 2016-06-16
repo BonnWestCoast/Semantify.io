@@ -1,5 +1,9 @@
 const _ = require('lodash');
 
+/**
+ * Class to represent ontologies
+ * from rdflib. Used by VowlParser.
+ */
 export default class Ontology {
   constructor(data) {
     this.ontologyName = '';
@@ -7,6 +11,8 @@ export default class Ontology {
     this.nodes = [];
     this.edges = [];
     this.filter = [];
+    // counters for init names
+    // Also useful to show number of current nodes
     this.metrics = [];
     this.id = 0;
 
@@ -14,7 +20,8 @@ export default class Ontology {
   }
 
   /**
-   * foreach item in vowl json do:
+   * Takes raw data as an input
+   * And initializes triples, nodes, objects
    * @param  {[type]} data [description]
    * @return {[type]}      [description]
    */
@@ -27,19 +34,21 @@ export default class Ontology {
     let object = null;
     let interfaceName = null;
     let label = null;
-    let filter = '';
+    const filter = '';
     let ontologyName = '';
-    let context = this.getDefaultContext();
+    // gets vocabularies names
+    const context = this.getDefaultContext();
     console.log('conl ' + context.length);
-    let contextArr = _.map(context, (item) => {
+    const contextArr = _.map(context, (item) => {
       return {
         name: item.name,
         uri: item.uri
-      }
+      };
     });
 
-    // console.log(data);
+    // foreach item in raw data (json). Each item is triple.
     _.each(data, item => {
+      // extracts info from triple
       subject = this.extractId(item.subject.nominalValue);
       predicate = this.extractId(item.predicate.nominalValue);
       object = this.extractId(item.object.nominalValue);
@@ -48,11 +57,10 @@ export default class Ontology {
         predicate,
         ontologyName,
         contextArr);
-      console.log('5');
+      // if triple has subject
       if (subject !== '' && isSubject) {
         ontologyName = this.extractOntologyName(item.subject.nominalValue);
         console.log('Extracting the ontology name', this.ontologyName);
-        // options.ontologyNamespace = this.extractOntologyNamespace(item.subject.nominalValue);
         isSubject = false;
       }
       this.addEdge(subject, predicate, object, label, filter, interfaceName);
@@ -61,12 +69,19 @@ export default class Ontology {
     });
   }
 
+  /** Extracts id from URI
+   * Example: http://...family-ontology#Alice
+   * Result: Alice
+   * @param {[type]} URI of element
+   */
   extractId(uri) {
     console.log('start extraction');
     const item = uri.split('#')[1];
     console.log(item);
     let ontologyName = '';
+    // if array of items is not empty
     if (!item) {
+      // get the last element of uri separated by /
       const endIndex = uri.lastIndexOf('/');
 
       if (endIndex !== -1) {
@@ -78,9 +93,13 @@ export default class Ontology {
     return item || ontologyName;
   }
 
+  /** Extracts vocabulary name from uri
+  */
   extractOntologyName(uri) {
     let ontologyName = '';
+    // starting from slash
     const startIndex = uri.lastIndexOf('/');
+    // hash in the end.
     const endIndex = uri.lastIndexOf('#');
 
     if (endIndex !== -1 && startIndex !== -1) {
@@ -95,17 +114,17 @@ export default class Ontology {
   }
 
   /**
-   * finds by URI value
+   * get ontology prefix by URI value
    * and looks in context array to get the shortname
    * for URI
+   * Example: @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+   * Result: xsd
    * @param  {[type]} uri [description]
    * @return {[type]}     [description]
    */
   findPrefix(uri, context) {
-    console.log('findPref for '+ uri);
     const prefix = _.find(
       context, ['uri', uri]);
-    console.log('show context');
     if (_.isEmpty(prefix)) {
       return '';
     } else {
@@ -113,8 +132,12 @@ export default class Ontology {
     }
   }
 
+  /**
+   * Extracts label from uri.
+   * Example if has prefix: prefix:Label
+   * Otherwise: Label
+  */
   extractLabel(uri, pred, ontName, context) {
-    console.log('extract label');
     const itemContext = uri.split('#')[0];
     const item = uri.split('#')[1];
     let label = '';
@@ -134,6 +157,9 @@ export default class Ontology {
     return label;
   }
 
+  /**
+   * Gets ontology namespace from uri
+  */
   extractOntologyNamespace(uri) {
     let ontologyNamespace = '';
     const endIndex = uri.lastIndexOf('/');
@@ -182,6 +208,11 @@ export default class Ontology {
     return item;
   }
 
+  /**
+   * Adds to metrics array
+   * Useful for seeing current numbers
+   * Of nodes, triples, edges
+  */
   addMetric(metricName, metricValue) {
     const item = {
       name: metricName,
@@ -195,6 +226,12 @@ export default class Ontology {
     this.metrics = [];
   }
 
+  /**
+   * Need this context, to
+   * map prefixes into uri's.
+   * When we get ontology from rdflib, we add
+   * other mappings here.
+  */
   getDefaultContext() {
     return [
       {name: 'rdf', uri: 'http://www.w3.org/1999/02/22-rdf-syntax-ns'},

@@ -57,22 +57,28 @@ export default class VowlParser {
    */
   getNodes(ont) {
     const nodes = ont.nodes;
+
+    // get subjects from all nodes
     const triples = _.map(nodes, (item) => {
       return {
         id: item.subject.trim(),
         label: item.subject.trim()
       };
     });
+
+    // get objects from all nodes
     const objects = _.map(nodes, (item) => {
       return {
         id: item.object.trim(),
         label: item.object.trim()
       };
     });
+
+    // combine triples and objects together
     const triplesAndObjects = _.union(triples, objects);
 
     return _.filter(triplesAndObjects, (item, index) => {
-      for(index += 1; index < triplesAndObjects.length; index += 1) {
+      for (index += 1; index < triplesAndObjects.length; index += 1) {
         if (_.isEqual(item, triplesAndObjects[index])) {
           return false;
         }
@@ -108,6 +114,7 @@ export default class VowlParser {
    * @return {[type]} [description]
    */
   getEdges(ont) {
+    // metrics (counters for initializing indices for blank nodes)
     let cl = 0;
     let ind = 0;
     let lit = 0;
@@ -125,6 +132,7 @@ export default class VowlParser {
           item.filter.push('data-property');
           dp++;
         } else if (item.to === 'Class') {
+          // if item is blank node
           if (item.from.substring(0, 1) !== '_') {
             item.filter.push('class');
             cl++;
@@ -144,8 +152,10 @@ export default class VowlParser {
         item.filter.push('blanknode');
         bn++;
       }
+      // if item comes from blank node
       if (item.from.substring(0, 1) === '_'
         || item.from !== '_') {
+          // add info that it comes from resource
         item.filter.push('resource');
       }
     });
