@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
 import Graph from './Graph';
 
+/**
+ * Class for visualizing ontology
+ * Using vis.js library
+ */
 export default class Visualizer extends Component {
   state = {
     file: {},
     isShown: false
   };
 
+  /**
+   * Get file from node server side
+   * TODO: remove inserted json.
+  */
   fetchFile = () => {
     console.log('start fetch file');
     const textExample = {
@@ -1624,6 +1632,9 @@ export default class Visualizer extends Component {
     return textExample;
   };
 
+  /**
+   * On click handler
+  */
   handleVisualize = () => {
     console.log('initialize app attempt');
     console.log('finish handleVisualize');

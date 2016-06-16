@@ -1,6 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 const vis = require('vis');
 
+/**
+ * Vis.js Wrapper Class. Handles vis.js events.
+ */
 export default class Graph extends Component {
   static propTypes = {
     graph: PropTypes.object,
@@ -26,11 +29,17 @@ export default class Graph extends Component {
     this.updateGraph();
   }
 
+  /**
+   * Method to change to hierarchical layout
+   * */
   changeMode = () => {
     this.setState({networkLayout: !this.state.networkLayout});
     this.updateGraph();
   }
 
+  /**
+   * Refreshing graph method
+  */
   updateGraph = () => {
     console.log('UpdateGraph start in: ' + this.props.identifier);
     const container = document.getElementById(this.props.identifier);
