@@ -12,7 +12,7 @@ import {
     Survey,
     NotFound,
     SchemaUpload,
-    Visualizer
+    Visualizer,
     SchemasList,
     Schema
   } from 'containers';
