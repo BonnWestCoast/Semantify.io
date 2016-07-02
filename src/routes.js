@@ -50,11 +50,11 @@ export default (store) => {
         <Route path="uploadSchema" component={SchemaUpload}/>
         <Route path="schemasList" component={SchemasList}/>
         <Route path="schema/:id" component={Schema}/>
+        <Route path="visualizer" component={Visualizer}/>
       </Route>
 
       { /* Routes */ }
       <Route path="about" component={About}/>
-      <Route path="visualizer" component={Visualizer}/>
       <Route path="login" component={Login}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
