@@ -8,7 +8,6 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import Helmet from 'react-helmet';
 import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
-import { InfoBar } from 'components';
 import { push } from 'react-router-redux';
 import config from '../../config';
 import { asyncConnect } from 'redux-async-connect';
@@ -123,9 +122,8 @@ export default class App extends Component {
         <div className={styles.appContent}>
           {this.props.children}
         </div>
-        <InfoBar/>
 
-        <div className="well text-center">
+        <div className={`well text-center ${styles.footer}`}>
           Have questions? Ask for help <a
           href="https://github.com/BonnWestCoast/Semantify.io/issues"
           target="_blank">on Github</a>
