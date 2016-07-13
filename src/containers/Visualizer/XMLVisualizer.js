@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { asyncConnect } from 'redux-async-connect';
-//import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { renderXML } from './xmlvis/renderXML';
+// import { renderXML } from './xmlvis/renderXML';
 import { loadXML } from '../../redux/modules/info';
 
 /**
@@ -15,9 +14,6 @@ import { loadXML } from '../../redux/modules/info';
     return dispatch(loadXML());
   }
 }])
-// @connect(
-//   state => ({data: state.info.data}),
-//   dispatch => bindActionCreators({loadXML}, dispatch))
 @connect(
   state => ({data: state.info.data}),
   {loadXML})

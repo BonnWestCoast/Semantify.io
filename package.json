@@ -12,6 +12,8 @@
     "lint": "eslint -c .eslintrc src api",
     "start-dev": "better-npm-run start-dev",
     "start-dev-api": "better-npm-run start-dev-api",
+    "start-debug-api": "better-npm-run start-debug-api",
+    "dev-debug": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-debug-api\"",
     "watch-client": "better-npm-run watch-client",
     "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
     "test": "karma start",
@@ -35,6 +37,15 @@
         "NODE_PATH": "./api",
         "NODE_ENV": "production",
         "APIPORT": 3030
+      }
+    },
+    "start-debug-api": {
+      "command": "nodemon --debug=5858 --nolazy -w ./api ./bin/api.js",
+      "env": {
+        "NODE_PATH": "./api",
+        "NODE_ENV": "development",
+        "APIPORT": 3030,
+        "DEBUG": true
       }
     },
     "start-dev": {
