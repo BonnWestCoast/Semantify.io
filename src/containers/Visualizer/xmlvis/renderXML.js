@@ -1,16 +1,13 @@
 import {drawTree} from './treeDrawer';
 
 export function renderXML(divClass, file, impNodes, impAttr) {
-	let XMLText = file;
-	let tagArray = XMLToArray(XMLText);  // returns an array of all nodes with related info
-	let mapArray = arrayMapping(tagArray, impNodes, impAttr)
+	let tagArray = XMLToArray(file);  // returns an array of all nodes with related info
+	let mapArray = arrayMapping(tagArray, impNodes, impAttr);
 	let JSONText = arrayToJSON(mapArray);  // converts array into a JSON file
 	let maxDepth = 0;  // we evaluate the maxDepth of the tree in order to draw a frame for it
 	let maxWidth = 0;  // we evaluate the maxWidth of the tree in order to draw a frame for it
-	let depthArray = [];
-	for(let i=0; i<=tagArray.length; i++) {
-			depthArray.push(0);
-	}
+	let depthArray = new Array(tagArray.length + 1).fill(0);
+
 	for (let i=0; i<tagArray.length; i++) {
 		if (tagArray[i].depth > maxWidth) {
 			maxWidth = tagArray[i].depth;
@@ -31,7 +28,7 @@ function XMLToArray(text) {
 	let ifCurrentStringIsComment = false;
 	let ifCurrentStringIsTag = false;
 	let ifCurrentStringIsDocumentType = false;
-	let newTag = new Object();
+	let newTag = {};
 	let tagArray = [];
 	let tagStack = [];
 	let id = 0;
@@ -133,13 +130,17 @@ function XMLToArray(text) {
 
 function arrayMapping(tagArray, impNodes, impAttr) {
 	let mapArray = attrTrans(tagArray, impAttr);
-	if (impNodes.length) {
-		let extra = new Object();
-		extra.children = [];
-		extra.depth = 1;
-		extra.id = tagArray.length+1;
-		extra.parent = 1;
-		extra.type = "Extra";
+  if (!impNodes.length) {
+    return mapArray;
+  }
+
+		let extra = {
+		  children : [],
+		  depth : 1,
+		  id : tagArray.length + 1,
+		  parent : 1,
+		  type : "Extra"
+    };
 		tagArray.push(extra);
 		noMoreChildren = [];
 		let ifChild = false;
@@ -174,7 +175,7 @@ function arrayMapping(tagArray, impNodes, impAttr) {
 		}
 		tagArray[0].children = newRootChildren;
 		tagArray[0].children.push(extra.id);
-	}
+
 	return mapArray;
 }
 
@@ -201,7 +202,7 @@ function attrTrans(tagArray, impAttr) {
 			tagArray[i].name = name;
 			if (impAttr.length) {
 				if (tagString.search(impAttr) != -1) {
-					for (let j=tagString.search(impAttr[0]) + impAttr[0].length + 2; tagString[j] != '"'; j++) {
+					for (let j = tagString.search(impAttr[0]) + impAttr[0].length + 2; tagString[j] != '"'; j++) {
 						extra += tagString[j];
 					}
 				}
@@ -215,20 +216,20 @@ function attrTrans(tagArray, impAttr) {
 
 function arrayToJSON(tagArray) {
 	let JSONText = [];
-	let root = new Object();
-	root = objToJSON(tagArray, 0, false);
+	let root = objToJSON(tagArray, 0, false);
 	JSONText.push(root);
 	return JSONText
 }
 
 function objToJSON(tagArray, id, parent) {
-	let node = new Object();  // we create an empty object and save there all the relevant information about the node
-	node.value = tagArray[id].value;
-	node.name = tagArray[id].name;
-	node.extra = tagArray[id].extra;
-	node.type = tagArray[id].type;
-	if (parent == false) {
-		node.parent = "null"
+	let node = {  // we create an empty object and save there all the relevant information about the node
+    value : tagArray[id].value,
+    name : tagArray[id].name,
+    extra : tagArray[id].extra,
+    type : tagArray[id].type
+  };
+	if (!parent) {
+		node.parent = "null";
 	} else {
 		node.parent = parent.name;
 	}
@@ -236,5 +237,5 @@ function objToJSON(tagArray, id, parent) {
 	for (let i=0; i<tagArray[id].children.length; i++) {  // for all children of the node we do the same
 		node.children.push(objToJSON(tagArray, tagArray[id].children[i]-1, node));
 	}
-	return node
+	return node;
 }

@@ -2,8 +2,8 @@ const d3 = require('d3');
 
 export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 	let margin = {top: 20, right: 120, bottom: 20, left: 120},
-		width = maxWidth*400 - margin.right - margin.left,
-		height = maxDepth*50 - margin.top - margin.bottom;
+		width = maxWidth * 400 - margin.right - margin.left,
+		height = maxDepth * 50 - margin.top - margin.bottom;
 
 	let i = 0,
 		duration = 750,
@@ -11,10 +11,10 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 
 	let tree = d3.layout.tree()
 		.size([height, width])
-		.children(function(d) { return d.children; });
+		.children(d =>{ return d.children; });
 
 	let diagonal = d3.svg.diagonal()
-		.projection(function(d) { return [d.y, d.x]; });
+		.projection(d => { return [d.y, d.x]; });
 
 	let svg = d3.select("body").append("svg")
 		.attr("width", width + margin.right + margin.left)
@@ -29,109 +29,93 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 
 	function collapse(d) {
 		if (d.children) {
-		d._children = d.children;
-		d._children.forEach(collapse);
-		d.children = null;
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
 		}
 	}
 
 	root.children.forEach(collapse);
 	update(root);
 
-
 	d3.select(self.frameElement).style("height", "800px");
 
 	function update(source) {
 
-	// Compute the new tree layout.
-	let nodes = tree.nodes(root).reverse(),
-		links = tree.links(nodes);
+    // Compute the new tree layout.
+    let nodes = tree.nodes(root).reverse(),
+      links = tree.links(nodes);
 
-	// Normalize for fixed-depth.
-	nodes.forEach(function(d) { d.y = d.depth * 240; });
+    // Normalize for fixed-depth.
+    nodes.forEach(d =>  { d.y = d.depth * 240; });
 
-	// Update the nodes…
-	let node = svg.selectAll("g.node")
-		.data(nodes, function(d) { return d.ids || (d.ids = ++i); });
+    // Update the nodes…
+    let node = svg.selectAll("g.node")
+      .data(nodes, d =>  { return d.ids || (d.ids = ++i); });
 
-	// Enter any new nodes at the parent's previous position.
-	let nodeEnter = node.enter().append("g")
-		.attr("class", "node")
-		.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-		.on("click", click);
+    // Enter any new nodes at the parent's previous position.
+    let nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .attr("transform", d => { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .on("click", click);
 
-	nodeEnter.append("circle")
-		.attr("r", 1e-6)
-		.style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+    nodeEnter.append("circle")
+      .attr("r", 1e-6)
+      .style("fill", d => { return d._children ? "lightsteelblue" : "#fff"; });
 
-	function wordwrap2(text) {
-		return text.split(" ")
-	}
-
-	nodeEnter.append("text")
-	.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-	.attr("dy", ".35em")
-	//.attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-	.style("fill-opacity", 1e-6)
-	.each(function (d) {
-		//let lines = wordwrap2(d.name)
-		let lines = [];
-		let index = 0;
-		if (d.value) {
-			lines[index] = d.value;
-			index += 1;
-		}
-		if (d.name) {
-			lines[index] = d.name;
-			index += 1;
-		}
-		if (d.extra) {
-			lines[index] = d.extra;
-			index += 1;
-		}
-		if (d.type) {
-			lines[index] = d.type;
-			index += 1;
-		}
-		if (!index) {
-			lines[index] = "UnknownNode";
-		}
-		for (let i = 0; i < lines.length; i++) {
-			if (i == 0) { // if that's the first line - make it bold
-				/*if (d.value != "" && d.value != undefined) {
-					d3.select(this).append("tspan")
-						.attr("style", "font-weight: bold")
-						.attr("dy",23)
-						.attr("x",function(d) {
-							return d.children || d._children ? -10 : 10; })
-						.text(lines[i] + " \"" + d.value + "\"")
-				}/ else {*/
-					d3.select(this).append("tspan")
-						.attr("style", "font-weight: bold")
-						.attr("dy",23)
-						.attr("x",function(d) {
-							return d.children || d._children ? -10 : 10; })
-						.text(lines[i])
-				//}
-			} else { // otherwise small font
-				d3.select(this).append("tspan")
-					.attr("style", "font: 8px sans-serif;")
-					.attr("dy",13)
-					.attr("x",function(d) {
-						return d.children || d._children ? -10 : 10; })
-					.text(lines[i])
-			}
+    nodeEnter.append("text")
+    .attr("x", d => { return d.children || d._children ? -10 : 10; })
+    .attr("dy", ".35em")
+    .style("fill-opacity", 1e-6)
+    .each(d => {
+      let lines = [];
+      let index = 0;
+      if (d.value) {
+        lines[index] = d.value;
+        index += 1;
+      }
+      if (d.name) {
+        lines[index] = d.name;
+        index += 1;
+      }
+      if (d.extra) {
+        lines[index] = d.extra;
+        index += 1;
+      }
+      if (d.type) {
+        lines[index] = d.type;
+        index += 1;
+      }
+      if (!index) {
+        lines[index] = "UnknownNode";
+      }
+      for (let i = 0; i < lines.length; i++) {
+        if (i == 0) {
+            d3.select(this).append("tspan")
+              .attr("style", "font-weight: bold")
+              .attr("dy",23)
+              .attr("x",function(d) {
+                return d.children || d._children ? -10 : 10; })
+              .text(lines[i]);
+        } else { // otherwise small font
+          d3.select(this).append("tspan")
+            .attr("style", "font: 8px sans-serif;")
+            .attr("dy",13)
+            .attr("x",function(d) {
+              return d.children || d._children ? -10 : 10; })
+            .text(lines[i])
+        }
 		}
 	});
 
 	// Transition nodes to their new position.
 	let nodeUpdate = node.transition()
 		.duration(duration)
-		.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+		.attr("transform", d => { return "translate(" + d.y + "," + d.x + ")"; });
 
 	nodeUpdate.select("circle")
 		.attr("r", 4.5)
-		.style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+		.style("fill", d => { return d._children ? "lightsteelblue" : "#fff"; });
 
 	nodeUpdate.select("text")
 		.style("fill-opacity", 1);
@@ -139,7 +123,7 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 	// Transition exiting nodes to the parent's new position.
 	let nodeExit = node.exit().transition()
 		.duration(duration)
-		.attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+		.attr("transform", d => { return "translate(" + source.y + "," + source.x + ")"; })
 		.remove();
 
 	nodeExit.select("circle")
@@ -150,12 +134,12 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 
 	// Update the links…
 	let link = svg.selectAll("path.link")
-		.data(links, function(d) { return d.target.ids; });
+		.data(links, d => { return d.target.ids; });
 
 	// Enter any new links at the parent's previous position.
 	link.enter().insert("path", "g")
 		.attr("class", "link")
-		.attr("d", function(d) {
+		.attr("d", d => {
 			let o = {x: source.x0, y: source.y0};
 			return diagonal({source: o, target: o});
 		});
@@ -168,28 +152,28 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 	// Transition exiting nodes to the parent's new position.
 	link.exit().transition()
 		.duration(duration)
-		.attr("d", function(d) {
+		.attr("d", d => {
 			let o = {x: source.x, y: source.y};
 			return diagonal({source: o, target: o});
 		})
 		.remove();
 
 	// Stash the old positions for transition.
-	nodes.forEach(function(d) {
-		d.x0 = d.x;
-		d.y0 = d.y;
-	});
+	nodes.forEach(d => {
+      d.x0 = d.x;
+      d.y0 = d.y;
+	  });
 	}
 
 	// Toggle children on click.
 	function click(d) {
-	if (d.children) {
-		d._children = d.children;
-		d.children = null;
-	} else {
-		d.children = d._children;
-		d._children = null;
-	}
-	update(d);
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+    update(d);
 	}
 }
