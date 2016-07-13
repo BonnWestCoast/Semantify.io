@@ -11,3 +11,7 @@ nodemon should be installed npm install -g nodemon
     Open browser to node-inspector
 
 You can set break point at original.js.source file in original (pre-transpiled) ES6 source.
+
+Taken from:
+
+https://github.com/erikras/react-redux-universal-hot-example/issues/830
