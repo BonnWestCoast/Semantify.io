@@ -89,15 +89,3 @@ if (config.apiPort) {
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');
 }
-
-app.get('/visparse', (req, res) => {
-  const path = '../fixtures/ontologyFile.owl';
-  const ontology = fs.readFileSync(__dirname + path).toString();
-  const ontObj = JSON.parse(ontology);
-  function send(triples) {
-    res.json(triples);
-  }
-
-  const parser = new VowlParser();
-  parser.parse(ontObj, send);
-});

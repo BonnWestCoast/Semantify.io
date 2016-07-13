@@ -11,3 +11,4 @@ export SchemaUpload from './SchemaUpload/SchemaUpload';
 export SchemasList from './SchemasList/SchemasList';
 export Schema from './Schema/Schema'
 export Visualizer from './Visualizer/Visualizer';
+export XMLVisualizer from './Visualizer/XMLVisualizer';

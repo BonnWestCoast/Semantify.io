@@ -42,3 +42,17 @@ export function load() {
     promise: (client) => client.get('/loadInfo')
   };
 }
+
+export function loadXML() {
+  return {
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/visualizer/loadXML')
+  };
+}
+
+export function loadOntology() {
+  return {
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/visualizer/loadOntology')
+  };
+}

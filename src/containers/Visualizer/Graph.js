@@ -35,7 +35,7 @@ export default class Graph extends Component {
   changeMode = () => {
     this.setState({networkLayout: !this.state.networkLayout});
     this.updateGraph();
-  }
+  };
 
   /**
    * Refreshing graph method
@@ -70,7 +70,7 @@ export default class Graph extends Component {
     };
 
     return new vis.Network(container, this.props.graph, options);
-  }
+  };
 
   render() {
     const {identifier, style} = this.props;

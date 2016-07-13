@@ -13,6 +13,7 @@ import {
     NotFound,
     SchemaUpload,
     Visualizer,
+    XMLVisualizer,
     SchemasList,
     Schema
   } from 'containers';
@@ -51,6 +52,7 @@ export default (store) => {
         <Route path="schemasList" component={SchemasList}/>
         <Route path="schema/:id" component={Schema}/>
         <Route path="visualizer" component={Visualizer}/>
+        <Route path="xmlVisualizer" component={XMLVisualizer}/>
       </Route>
 
       { /* Routes */ }

@@ -60,13 +60,6 @@ reactTransform[1].transforms.push({
   locals: ['module']
 });
 
-/**
- *  Add if use webvowl solution
-      './src/containers/Visualizer/webvowl/deploy/js/d3.min.js',
-      './src/containers/Visualizer/webvowl/deploy/js/webvowl.js',
-      './src/containers/Visualizer/webvowl/deploy/js/webvowl.app.js'
- */
-
 module.exports = {
   devtool: 'inline-source-map',
   context: path.resolve(__dirname, '..'),
