@@ -1,4 +1,6 @@
-export default function drawTree(selectString, treeData, maxDepth, maxWidth) {
+const d3 = require('d3');
+
+export function drawTree(selectString, treeData, maxDepth, maxWidth) {
 	let margin = {top: 20, right: 120, bottom: 20, left: 120},
 		width = maxWidth*400 - margin.right - margin.left,
 		height = maxDepth*50 - margin.top - margin.bottom;

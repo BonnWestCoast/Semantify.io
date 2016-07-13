@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { asyncConnect } from 'redux-async-connect';
 import {connect} from 'react-redux';
-// import { renderXML } from './xmlvis/renderXML';
+import { renderXML } from './xmlvis/renderXML';
 import { loadXML } from '../../redux/modules/info';
 
 /**
@@ -23,13 +23,15 @@ export default class XMLVisualizer extends Component {
     loadXML: PropTypes.func.isRequired
   };
 
-  render() {
+  componentDidMount() {
     const {data} = this.props;
     console.log(data);
-    console.log(this.props);
+    renderXML('xml-div', data.message, [], []);
+  }
 
+  render() {
     return (
-      <div>OLOLO</div>
+      <div className="xml-div"></div>
     )
   }
 }

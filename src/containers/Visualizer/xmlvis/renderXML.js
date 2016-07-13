@@ -1,7 +1,7 @@
 import {drawTree} from './treeDrawer';
 
-export default function renderXML(divClass, file, impNodes, impAttr) {
-	let XMLText = readTextFile(file);
+export function renderXML(divClass, file, impNodes, impAttr) {
+	let XMLText = file;
 	let tagArray = XMLToArray(XMLText);  // returns an array of all nodes with related info
 	let mapArray = arrayMapping(tagArray, impNodes, impAttr)
 	let JSONText = arrayToJSON(mapArray);  // converts array into a JSON file
@@ -21,21 +21,6 @@ export default function renderXML(divClass, file, impNodes, impAttr) {
 	maxDepth = Math.max.apply(null, depthArray);
 	divClass = "."+divClass;
 	drawTree(divClass, JSONText, maxDepth, maxWidth);
-}
-
-function readTextFile(file){
-	let allText = "";
-	let rawFile = new XMLHttpRequest();
-	rawFile.open("GET", file, false);
-	rawFile.onreadystatechange = function () {
-		if(rawFile.readyState === 4) {
-			if(rawFile.status === 200 || rawFile.status == 0) {
-				allText = rawFile.responseText;
-			}
-		}
-	}
-	rawFile.send(null);
-	return allText;
 }
 
 function XMLToArray(text) {
