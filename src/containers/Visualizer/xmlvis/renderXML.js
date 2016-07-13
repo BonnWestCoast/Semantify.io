@@ -4,19 +4,18 @@ export function renderXML(htmlTag, file, impNodes, impAttr) {
 	let tagArray = XMLToArray(file);  // returns an array of all nodes with related info
 	let mapArray = arrayMapping(tagArray, impNodes, impAttr);
 	let JSONText = [objToJSON(mapArray, 0, false)];  // converts array into a JSON file
-	let maxDepth = 0;  // we evaluate the maxDepth of the tree in order to draw a frame for it
 	let maxWidth = 0;  // we evaluate the maxWidth of the tree in order to draw a frame for it
 	let depthArray = new Array(tagArray.length + 1).fill(0);
 
-	for (let i=0; i<tagArray.length; i++) {
-		if (tagArray[i].depth > maxWidth) {
-			maxWidth = tagArray[i].depth;
+	for (let tag of tagArray) {
+		if (tag.depth > maxWidth) {
+			maxWidth = tag.depth;
 		}
-		depthArray[tagArray[i].depth] += 1;
+		depthArray[tag.depth] += 1;
 	}
 	maxWidth += 1;
-	maxDepth = Math.max.apply(null, depthArray);
-	drawTree(htmlTag, JSONText, maxDepth, maxWidth);
+
+	drawTree(htmlTag, JSONText, Math.max.apply(null, depthArray), maxWidth);
 }
 
 function XMLToArray(text) {
@@ -133,47 +132,36 @@ function arrayMapping(tagArray, impNodes, impAttr) {
     return mapArray;
   }
 
-		let extra = {
-		  children : [],
-		  depth : 1,
-		  id : tagArray.length + 1,
-		  parent : 1,
-		  type : "Extra"
-    };
-		tagArray.push(extra);
-		noMoreChildren = [];
-		let ifChild = false;
-		for (let i=0; i<tagArray.length-1; i++) {  // length - 1 because we want to exclude newly added tag 'Extra'
-			if (tagArray[i].depth == 1) {
-				ifChild = false;
-				for (let j=0; j<impNodes.length; j++) {
-					if (tagArray[i].type == impNodes[j]) {
-						ifChild = true;
-						break;
-					}
-				}
-				if (!ifChild) {
-					tagArray[i].parent = extra.id;
-					tagArray[tagArray.length-1].children.push(tagArray[i].id);
-					noMoreChildren.push(tagArray[i].id);
-				}
-			}
-		}
-		newRootChildren = [];
-		for (let i=0; i<tagArray[0].children.length; i++) {
-			let ifEqual = false;
-			for (let j=0; j<noMoreChildren.length; j++) {
-				if (tagArray[0].children[i] == noMoreChildren[j]) {
-					ifEqual = true;
-					break;
-				}
-			}
-			if (!ifEqual) {
-				newRootChildren.push(tagArray[0].children[i]);
-			}
-		}
-		tagArray[0].children = newRootChildren;
-		tagArray[0].children.push(extra.id);
+  let extra = {
+	  children : [],
+	  depth : 1,
+	  id : tagArray.length + 1,
+	  parent : 1,
+	  type : "Extra"
+  };
+  tagArray.push(extra);
+  noMoreChildren = [];
+  let ifChild = false;
+  for (let i = 0; i < tagArray.length-1; i++) {  // length - 1 because we want to exclude newly added tag 'Extra'
+    if (tagArray[i].depth === 1) {
+      ifChild = impNodes.indexOf(tagArray[i].type) > -1;
+
+      if (!ifChild) {
+        tagArray[i].parent = extra.id;
+        tagArray[tagArray.length-1].children.push(tagArray[i].id);
+        noMoreChildren.push(tagArray[i].id);
+      }
+    }
+  }
+  newRootChildren = tagArray[0].children.map(tagChildren => {
+    let ifEqual = noMoreChildren.indexOf(tagChildren) > -1;
+    if (!ifEqual) {
+      return tagChildren;
+    }
+  });
+
+  tagArray[0].children = newRootChildren;
+  tagArray[0].children.push(extra.id);
 
 	return mapArray;
 }
@@ -184,11 +172,11 @@ function attrTrans(tagArray, impAttr) {
 		let type = '';
 		let name = '';
 		let extra = '';
-		for (let j=0; j<tagString.length; j++) {
-			if (tagString[j] == ' ') {
+		for (let tagStr of tagString) {
+			if (tagStr == ' ') {
 				break;
 			}
-			type += tagString[j];
+			type += tagStr;
 		}
 		let index = tagString.search('="') + 2;
 		if (index > 1) {
@@ -199,12 +187,10 @@ function attrTrans(tagArray, impAttr) {
 				name += tagString[j];
 			}
 			tag.name = name;
-			if (impAttr.length) {
-				if (tagString.search(impAttr) != -1) {
-					for (let j = tagString.search(impAttr[0]) + impAttr[0].length + 2; tagString[j] != '"'; j++) {
-						extra += tagString[j];
-					}
-				}
+			if (impAttr.length && tagString.search(impAttr) !== -1) {
+			  for (let j = tagString.search(impAttr[0]) + impAttr[0].length + 2; tagString[j] != '"'; j++) {
+			    extra += tagString[j];
+        }
 			}
 			tag.extra = extra;
 		}
