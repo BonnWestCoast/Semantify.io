@@ -26,7 +26,7 @@ export default class XMLVisualizer extends Component {
   componentDidMount() {
     const {data} = this.props;
     console.log(data);
-    renderXML('xml-div', data.message, [], []);
+    renderXML('.xml-div', data.message, [], []);
   }
 
   render() {

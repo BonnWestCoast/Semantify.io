@@ -1,9 +1,9 @@
 import {drawTree} from './treeDrawer';
 
-export function renderXML(divClass, file, impNodes, impAttr) {
+export function renderXML(htmlTag, file, impNodes, impAttr) {
 	let tagArray = XMLToArray(file);  // returns an array of all nodes with related info
 	let mapArray = arrayMapping(tagArray, impNodes, impAttr);
-	let JSONText = arrayToJSON(mapArray);  // converts array into a JSON file
+	let JSONText = [objToJSON(mapArray, 0, false)];  // converts array into a JSON file
 	let maxDepth = 0;  // we evaluate the maxDepth of the tree in order to draw a frame for it
 	let maxWidth = 0;  // we evaluate the maxWidth of the tree in order to draw a frame for it
 	let depthArray = new Array(tagArray.length + 1).fill(0);
@@ -16,8 +16,7 @@ export function renderXML(divClass, file, impNodes, impAttr) {
 	}
 	maxWidth += 1;
 	maxDepth = Math.max.apply(null, depthArray);
-	divClass = "."+divClass;
-	drawTree(divClass, JSONText, maxDepth, maxWidth);
+	drawTree(htmlTag, JSONText, maxDepth, maxWidth);
 }
 
 function XMLToArray(text) {
@@ -212,13 +211,6 @@ function attrTrans(tagArray, impAttr) {
 		tag.type = type;
 	}
 	return tagArray;
-}
-
-function arrayToJSON(tagArray) {
-	let JSONText = [];
-	let root = objToJSON(tagArray, 0, false);
-	JSONText.push(root);
-	return JSONText
 }
 
 function objToJSON(tagArray, id, parent) {
