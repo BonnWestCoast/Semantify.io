@@ -180,8 +180,8 @@ function arrayMapping(tagArray, impNodes, impAttr) {
 }
 
 function attrTrans(tagArray, impAttr) {
-	for (let i=0; i<tagArray.length; i++) {
-		let tagString = tagArray[i].tag;
+	for (let tag of tagArray) {
+		let tagString = tag.tag;
 		let type = '';
 		let name = '';
 		let extra = '';
@@ -199,7 +199,7 @@ function attrTrans(tagArray, impAttr) {
 				}
 				name += tagString[j];
 			}
-			tagArray[i].name = name;
+			tag.name = name;
 			if (impAttr.length) {
 				if (tagString.search(impAttr) != -1) {
 					for (let j = tagString.search(impAttr[0]) + impAttr[0].length + 2; tagString[j] != '"'; j++) {
@@ -207,9 +207,9 @@ function attrTrans(tagArray, impAttr) {
 					}
 				}
 			}
-			tagArray[i].extra = extra;
+			tag.extra = extra;
 		}
-		tagArray[i].type = type;
+		tag.type = type;
 	}
 	return tagArray;
 }
@@ -226,16 +226,13 @@ function objToJSON(tagArray, id, parent) {
     value : tagArray[id].value,
     name : tagArray[id].name,
     extra : tagArray[id].extra,
-    type : tagArray[id].type
+    type : tagArray[id].type,
+    parent : parent ? parent.name : "null"
   };
-	if (!parent) {
-		node.parent = "null";
-	} else {
-		node.parent = parent.name;
-	}
-	node.children = [];
-	for (let i=0; i<tagArray[id].children.length; i++) {  // for all children of the node we do the same
-		node.children.push(objToJSON(tagArray, tagArray[id].children[i]-1, node));
-	}
+
+	node.children = tagArray[id].children.map(children => {
+    return objToJSON(tagArray, children - 1, node)
+  });
+
 	return node;
 }
