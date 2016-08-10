@@ -1,14 +1,17 @@
 import VowlParser from '../VowlParser';
 import {expect} from 'chai';
+const fs = require('fs');
 
 describe('parseVowl', () => {
   it('parses vowl and creates ontology', () => {
     const parser = new VowlParser();
-    const res = parser.parse('./../fixtures/owl/ontologyFile.owl',
+    const fileName = './../../fixtures/owl/ontologyFile.owl';
+    const ontology = fs.readFileSync(__dirname + fileName).toString();
+
+    const res = parser.parse(ontology,
       () => {
         console.log('FINISHED');
         expect(res).to.deep.equal('Lol');
       });
-
   });
 });

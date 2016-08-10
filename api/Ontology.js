@@ -26,8 +26,6 @@ export default class Ontology {
    * @return {[type]}      [description]
    */
   parseVowl(data) {
-    console.log('start parse');
-    console.log(data.length);
     let isSubject = true;
     let subject = null;
     let predicate = null;
@@ -38,7 +36,6 @@ export default class Ontology {
     let ontologyName = '';
     // gets vocabularies names
     const context = this.getDefaultContext();
-    console.log('conl ' + context.length);
     const contextArr = _.map(context, (item) => {
       return {
         name: item.name,
@@ -60,7 +57,6 @@ export default class Ontology {
       // if triple has subject
       if (subject !== '' && isSubject) {
         ontologyName = this.extractOntologyName(item.subject.nominalValue);
-        console.log('Extracting the ontology name', this.ontologyName);
         isSubject = false;
       }
       this.addEdge(subject, predicate, object, label, filter, interfaceName);
@@ -75,9 +71,7 @@ export default class Ontology {
    * @param {[type]} URI of element
    */
   extractId(uri) {
-    console.log('start extraction');
     const item = uri.split('#')[1];
-    console.log(item);
     let ontologyName = '';
     // if array of items is not empty
     if (!item) {

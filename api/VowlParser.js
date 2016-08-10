@@ -15,9 +15,7 @@ export default class VowlParser {
    * @param  {Object} vowlJson [vowl json object]
    * @return {Object}          [vis.js format object]
    */
-  parse(path, callback) {
-    const ontology = fs.readFileSync(__dirname + path).toString();
-
+  parse(ontology, callback) {
     rdfstore.create((err, store) => {
       store.load('text/turtle', ontology, 'graph', (err, results) => {
         if (err) {
@@ -28,10 +26,8 @@ export default class VowlParser {
               console.log('Error loading the graph', err);
             } else {
               const triples = graph.toArray();
-              console.log('Successfully fetched graph ', triples.length, 'triples');
 
               if (triples.length !== 0) {
-                console.log('load ontology');
                 const ont = new Ontology(triples);
                 const finalObj = {
                   nodes: this.getNodes(ont),
@@ -40,7 +36,7 @@ export default class VowlParser {
                 // fs.writeFile(_dirname + './../fixtures/owl/res.json', finalObj, (err) => {
                 //   console.log('finished writing');
                 // });
-                console.log(finalObj.edges);
+                //console.log(finalObj.edges);
                 callback(finalObj);
               }
             }
