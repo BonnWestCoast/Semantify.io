@@ -14,7 +14,7 @@ export default class Graph extends Component {
   static defaultProps = {
     graph: {},
     identifier: 'graph',
-    style: {width: '640px', height: '480px'}
+    style: {width: '100%', height: '1200px'}
   };
 
   state = {
@@ -43,6 +43,7 @@ export default class Graph extends Component {
   updateGraph = () => {
     console.log('UpdateGraph start in: ' + this.props.identifier);
     const container = document.getElementById(this.props.identifier);
+    const data = this.props.graph.root;
     const options = {
       autoResize: true,
       height: '100%',
@@ -69,7 +70,7 @@ export default class Graph extends Component {
       }
     };
 
-    return new vis.Network(container, this.props.graph, options);
+    return new vis.Network(container, data, options);
   };
 
   render() {

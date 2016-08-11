@@ -11,6 +11,7 @@ export default class Ontology {
     this.nodes = [];
     this.edges = [];
     this.filter = {};
+    this.toFromLookup = {};
     // counters for init names
     // Also useful to show number of current nodes
     this.metrics = [];
@@ -198,7 +199,21 @@ export default class Ontology {
       arrows: 'from',
       filter: filter
     };
-    this.filter[from] = item;
+
+    if (from in this.filter) {
+      this.filter[from].push(item);
+    }
+    else {
+      this.filter[from] = [item];
+    }
+
+    if (to in this.toFromLookup) {
+      this.toFromLookup[to].push(from);
+    }
+    else {
+      this.toFromLookup[to] = [from];
+    }
+
     return item;
   }
 

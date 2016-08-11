@@ -9,7 +9,7 @@ describe('loadOntology', () => {
   it('loads ontology with correct structure', () => {
     return loadOntology().then(data => {
       let ontology = data.message;
-      expect(ontology).have.keys(['edges', 'root']);
+      expect(ontology).have.keys(['edges', 'root', 'toFromLookup']);
     });
   });
 });

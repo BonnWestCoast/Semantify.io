@@ -34,9 +34,16 @@ export default class VowlParser {
                 const root = this.getRoot(ont.filter, nodes);
 
                 const finalObj = {
-                  root: root,
-                  edges: edges
+                  root: {
+                    'nodes' : root,
+                    'edges': []
+                  },
+                  // mapping from - to (subject - object) + edge info
+                  edges: edges,
+                  // mapping to - from (object - subject)
+                  toFromLookup: ont.toFromLookup
                 };
+                console.log(finalObj.toFromLookup);
 
                 callback(finalObj);
               }
@@ -48,6 +55,14 @@ export default class VowlParser {
     });
   }
 
+  /**
+   * Get nodes that are root
+   * (They are elements which are not keys
+   * in edge dictionary)
+   * @param edges
+   * @param nodes
+   * @returns {*}
+     */
   getRoot(edges, nodes) {
     return nodes.filter((triple) => {
       let subjectName = triple.id;
