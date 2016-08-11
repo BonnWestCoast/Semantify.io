@@ -22,11 +22,27 @@ export default class Graph extends Component {
   };
 
   componentDidMount() {
-    this.updateGraph();
+    let rootData = this.props.graph.root;
+    this.nodes = new vis.DataSet(rootData.nodes);
+    this.edges = new vis.DataSet(rootData.edges);
+
+    this.chart = this.createGraph({
+      nodes: this.nodes,
+      edges: this.edges
+    });
+
+    this.bindEvents();
   }
 
   componentDidUpdate() {
     this.updateGraph();
+  }
+
+  bindEvents() {
+    this.chart.on("doubleClick", function (params) {
+      params.event = "[original event]";
+      console.log('<h2>doubleClick event:</h2>' + JSON.stringify(params, null, 4));
+    });
   }
 
   /**
@@ -42,8 +58,11 @@ export default class Graph extends Component {
   */
   updateGraph = () => {
     console.log('UpdateGraph start in: ' + this.props.identifier);
+    this.chart.redraw();
+  };
+
+  createGraph = (data) => {
     const container = document.getElementById(this.props.identifier);
-    const data = this.props.graph.root;
     const options = {
       autoResize: true,
       height: '100%',
