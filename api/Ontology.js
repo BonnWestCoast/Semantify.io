@@ -10,7 +10,7 @@ export default class Ontology {
     this.triples = [];
     this.nodes = [];
     this.edges = [];
-    this.filter = [];
+    this.filter = {};
     // counters for init names
     // Also useful to show number of current nodes
     this.metrics = [];
@@ -198,7 +198,7 @@ export default class Ontology {
       arrows: 'from',
       filter: filter
     };
-    this.filter.push(item);
+    this.filter[from] = item;
     return item;
   }
 

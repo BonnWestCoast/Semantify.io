@@ -6,10 +6,10 @@ import {expect} from 'chai';
 import loadOntology from '../visualizer/loadOntology';
 
 describe('loadOntology', () => {
-  it('loads ontology data', () => {
+  it('loads ontology with correct structure', () => {
     return loadOntology().then(data => {
       let ontology = data.message;
-      expect(ontology).have.keys(['edges', 'nodes']);
+      expect(ontology).have.keys(['edges', 'root']);
     });
   });
 });

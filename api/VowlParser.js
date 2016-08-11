@@ -29,14 +29,15 @@ export default class VowlParser {
 
               if (triples.length !== 0) {
                 const ont = new Ontology(triples);
+                const edges = this.getEdges(ont);
+                const nodes = this.getNodes(ont);
+                const root = this.getRoot(ont.filter, nodes);
+
                 const finalObj = {
-                  nodes: this.getNodes(ont),
-                  edges: this.getEdges(ont)
+                  root: root,
+                  edges: edges
                 };
-                // fs.writeFile(_dirname + './../fixtures/owl/res.json', finalObj, (err) => {
-                //   console.log('finished writing');
-                // });
-                //console.log(finalObj.edges);
+
                 callback(finalObj);
               }
             }
@@ -44,6 +45,13 @@ export default class VowlParser {
         }
       });
       store.close();
+    });
+  }
+
+  getRoot(edges, nodes) {
+    return nodes.filter((triple) => {
+      let subjectName = triple.id;
+      return !(subjectName in edges);
     });
   }
 
@@ -84,28 +92,6 @@ export default class VowlParser {
   }
 
   /**
-   * construct the array of edges
-   * @param  {[type]} ont [description]
-   * @return {[type]}     [description]
-   */
-  getEdgeTriples(ont) {
-    return ont.edges.map((item) => {
-      return {
-        // subject
-        from: item.subject.trim(),
-        // object
-        to: item.object.trim(),
-        // predicate
-        predicate: item.predicate.trim(),
-        label: item.label.trim(),
-        arrows: 'from',
-        filter: [],
-        interf: item.interf
-      };
-    });
-  }
-
-  /**
    * Gets edges from ontology object
    * @return {[type]} [description]
    */
@@ -117,9 +103,22 @@ export default class VowlParser {
     let bn = 0;
     let dp = 0;
     let op = 0;
-    const triples = this.getEdgeTriples(ont);
+    const triples = ont.edges;
 
-    _.each(triples, (item) => {
+    _.each(triples, (triple) => {
+      let item = {
+        // subject
+        from: triple.subject.trim(),
+        // object
+        to: triple.object.trim(),
+        // predicate
+        predicate: triple.predicate.trim(),
+        label: triple.label.trim(),
+        arrows: 'from',
+        filter: [],
+        interf: triple.interf
+      };
+
       if (item.predicate === 'type') {
         if (item.to === 'ObjectProperty') {
           item.filter.push('object-property');
@@ -154,9 +153,7 @@ export default class VowlParser {
           // add info that it comes from resource
         item.filter.push('resource');
       }
-    });
 
-    _.each(triples, (item) => {
       ont.addFilter(item.from, item.to, item.label, item.arrows, item.filter);
     });
 
