@@ -12,7 +12,7 @@ import {list as getList} from 'redux/selectors/schemasList'
 export default class SchemasList extends Component {
   static propTypes = {
     list: PropTypes.array.isRequired
-  }
+  };
 
   render() {
     return (

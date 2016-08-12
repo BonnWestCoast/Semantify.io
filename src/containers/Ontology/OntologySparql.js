@@ -1,0 +1,30 @@
+/**
+ * Created by akorovin on 12.08.2016.
+ */
+
+import React, {Component, PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {OntologyList} from 'OntologyList'
+
+@connect(
+  state => ({query: state.query})
+)
+export default class OntologySparql extends Component {
+  static propTypes = {
+    query: PropTypes.string
+  };
+
+  render() {
+    return (
+      <form>
+        <div className="form-group">
+          <label htmlFor="sparqlTextarea">SPARQL Query</label>
+          <textarea className="form-control" id="sparql" rows="3" />
+        </div>
+        <button type="submit" className="btn btn-primary">Run</button>
+      </form>
+    )
+  }
+}
+
+
