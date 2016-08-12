@@ -9,7 +9,9 @@ import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
 import schema from './schema';
-import schemasList from './schemasList'
+import schemasList from './schemasList';
+import ontologySparql from './ontologySparql';
+import ontologyList from './ontologyList';
 
 export default combineReducers({
   routing: routerReducer,
@@ -24,5 +26,7 @@ export default combineReducers({
   info,
   widgets,
   schema,
-  schemasList
+  schemasList,
+  ontologySparql,
+  ontologyList
 });

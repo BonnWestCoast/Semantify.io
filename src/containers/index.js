@@ -12,3 +12,6 @@ export SchemasList from './SchemasList/SchemasList';
 export Schema from './Schema/Schema'
 export Visualizer from './Visualizer/Visualizer';
 export XMLVisualizer from './Visualizer/XMLVisualizer';
+export Ontology from './Ontology/Ontology';
+export OntologyList from './Ontology/OntologyList';
+export OntologySparql from './Ontology/OntologySparql';

@@ -7,7 +7,7 @@ module.exports = {
   // when adding "js" extension to asset types
   // and then enabling debug mode, it may cause a weird error:
   //
-  // [0] npm run start-prod exited with code 1
+  // [0] npm runQuery start-prod exited with code 1
   // Sending SIGTERM to other processes..
   //
   // debug: true,

@@ -2,33 +2,34 @@
  * Created by akorovin on 12.08.2016.
  */
 
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {getOntologyList} from 'redux/se'
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {loadOntologyList} from 'redux/modules/ontologyList';
+import {DropdownButton, MenuItem} from 'react-bootstrap';
 
 @connect(
-  state => ({list: getOntologyList(state)})
+  state => ({
+    list: loadOntologyList(state),
+    chosenOntology: state.ontologyList.chosenOntology
+  })
 )
 export default class OntologyList extends Component {
   static propTypes = {
-    list: PropTypes.array.isRequired
+    list: PropTypes.array.isRequired,
+    chosenOntology: PropTypes.string
   };
 
   render() {
+    console.log(this.props);
     return (
-      <div className="dropdown">
-        <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          Dropdown
-          <span className="caret" />
-        </button>
-        <ul className="dropdown-menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li role="separator" className="divider" />
-          <li><a href="#">Separated link</a></li>
-        </ul>
-      </div>
+      <DropdownButton title="List of ontologies">
+        {
+          this.props.list.map(it => {
+            console.log(it)
+            return <MenuItem href="#">{it}</MenuItem>
+          })
+        }
+      </DropdownButton>
     )
   }
 }

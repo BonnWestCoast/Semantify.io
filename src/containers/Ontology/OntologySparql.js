@@ -2,16 +2,20 @@
  * Created by akorovin on 12.08.2016.
  */
 
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {OntologyList} from 'OntologyList'
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {loadOntologyList} from 'redux/modules/ontologyList';
 
 @connect(
-  state => ({query: state.query})
+  state => ({
+    query: state.ontologySparql.query,
+    chosenOntology: state.ontologyList.chosenOntology
+  })
 )
 export default class OntologySparql extends Component {
   static propTypes = {
-    query: PropTypes.string
+    query: PropTypes.string,
+    chosenOntology: PropTypes.string
   };
 
   render() {
@@ -26,5 +30,3 @@ export default class OntologySparql extends Component {
     )
   }
 }
-
-
