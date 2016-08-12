@@ -26,14 +26,17 @@ export default class OntologyList extends Component {
     chosenOntology: PropTypes.string
   };
 
+  static componentWillReceiveProps(nextProps) {
+    console.log('olo');
+  }
+
   render() {
-    console.log(this.props);
     return (
-      <DropdownButton title="List of ontologies">
+      <DropdownButton id="ontologyList" title="List of ontologies">
         {
           this.props.list.map(it => {
             console.log(it)
-            return <MenuItem href="#">{it}</MenuItem>
+            return <MenuItem href="#" className="ontology-list-el" key={it}>{it}</MenuItem>
           })
         }
       </DropdownButton>

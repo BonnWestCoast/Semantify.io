@@ -24,7 +24,7 @@ export default function ontologyList(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: true,
-        data: action.result
+        list: action.result.message
       };
     case LOAD_FAIL:
       return {
