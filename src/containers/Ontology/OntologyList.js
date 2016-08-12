@@ -4,14 +4,21 @@
 
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {asyncConnect} from 'redux-async-connect';
 import {loadOntologyList} from 'redux/modules/ontologyList';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
 
+@asyncConnect([{
+  promise: ({store: {dispatch}}) => {
+    return dispatch(loadOntologyList());
+  }
+}])
 @connect(
   state => ({
-    list: loadOntologyList(state),
+    list: state.ontologyList.list,
     chosenOntology: state.ontologyList.chosenOntology
-  })
+  }),
+  {loadOntologyList}
 )
 export default class OntologyList extends Component {
   static propTypes = {
