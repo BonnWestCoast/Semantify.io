@@ -6,15 +6,16 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {loadOntologyList} from 'redux/modules/ontologyList';
 
+/**
+ * Component for sending sparql query to server
+ */
 @connect(
   state => ({
-    query: state.ontologySparql.query,
     chosenOntology: state.ontologyList.chosenOntology
   })
 )
 export default class OntologySparql extends Component {
   static propTypes = {
-    query: PropTypes.string,
     chosenOntology: PropTypes.string
   };
 

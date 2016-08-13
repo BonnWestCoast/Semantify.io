@@ -10,6 +10,9 @@ import OntologySparql from './OntologySparql';
 // import {loadOntologyText} from 'redux/modules/info';
 import {loadOntologyList} from '../../redux/modules/ontologyList';
 
+/**
+ * Component for showing ontology page
+ */
 @asyncConnect([{
   promise: ({store: {dispatch}}) => {
     return dispatch(loadOntologyList());
@@ -28,11 +31,15 @@ export default class Ontology extends Component {
 
   render() {
     const styles = require('./Ontology.scss');
+    const list = this.props.dataList.message;
+    // get first element for initializing dropdown
+    const chosenOntology = list.length > 0? list[0] : '';
+
     return (
       <div className={styles.ontologyPage + ' container'}>
         <div className="row">
           <div className={styles.ontologyList}>
-            <OntologyList list={this.props.dataList.message}/>
+            <OntologyList list={list} chosenOntology={chosenOntology}/>
             <button type="submit" className="btn btn-success">Visualize</button>
           </div>
         </div>
