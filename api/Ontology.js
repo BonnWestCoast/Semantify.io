@@ -109,7 +109,7 @@ export default class Ontology {
   }
 
   /**
-   * get ontology prefix by URI value
+   * get ontologies prefix by URI value
    * and looks in context array to get the shortname
    * for URI
    * Example: @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -153,7 +153,7 @@ export default class Ontology {
   }
 
   /**
-   * Gets ontology namespace from uri
+   * Gets ontologies namespace from uri
   */
   extractOntologyNamespace(uri) {
     let ontologyNamespace = '';
@@ -238,7 +238,7 @@ export default class Ontology {
   /**
    * Need this context, to
    * map prefixes into uri's.
-   * When we get ontology from rdflib, we add
+   * When we get ontologies from rdflib, we add
    * other mappings here.
   */
   getDefaultContext() {

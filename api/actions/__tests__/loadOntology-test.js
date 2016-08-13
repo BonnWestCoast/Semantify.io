@@ -6,7 +6,7 @@ import {expect} from 'chai';
 import loadOntology from '../visualizer/loadOntology';
 
 describe('loadOntology', () => {
-  it('loads ontology with correct structure', () => {
+  it('loads ontologies with correct structure', () => {
     return loadOntology().then(data => {
       let ontology = data.message;
       expect(ontology).have.keys(['edges', 'root', 'toFromLookup']);

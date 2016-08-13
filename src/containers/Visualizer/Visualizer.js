@@ -5,7 +5,7 @@ import Graph from './Graph';
 import { loadOntology } from '../../redux/modules/info';
 
 /**
- * Class for visualizing ontology
+ * Class for visualizing ontologies
  * Using vis.js library
  */
 @asyncConnect([{
@@ -31,7 +31,6 @@ export default class Visualizer extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div className="visualize-container">
         <button className="btn btn-success"

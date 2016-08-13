@@ -13,7 +13,7 @@ const initialState = {
   query: ''
 };
 
-export default function ontologySparql(state = initialState, action = {}) {
+export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case UPLOAD:
       return {

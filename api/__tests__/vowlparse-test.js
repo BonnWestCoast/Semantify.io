@@ -3,7 +3,7 @@ import {expect} from 'chai';
 const fs = require('fs');
 
 describe('parseVowl', () => {
-  it('parses vowl and creates ontology', () => {
+  it('parses vowl and creates ontologies', () => {
     const parser = new VowlParser();
     const fileName = './../../fixtures/owl/ontologyFile.owl';
     const ontology = fs.readFileSync(__dirname + fileName).toString();

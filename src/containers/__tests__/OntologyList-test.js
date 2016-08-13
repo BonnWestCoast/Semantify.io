@@ -36,7 +36,7 @@ describe('OntologyList', () => {
   });
 
   it('should render with correct value', () => {
-    const children = dom.getElementsByClassName('ontology-list-el').length;
+    const children = dom.getElementsByClassName('ontologies-list-el').length;
     expect(children).to.equal(mockStore.ontologyList.list.length);
   });
 });

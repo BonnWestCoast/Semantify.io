@@ -12,7 +12,7 @@ const initialState = {
   chosenOntology: ''
 };
 
-export default function ontologyList(state = initialState, action = {}) {
+export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
       return {
@@ -38,13 +38,9 @@ export default function ontologyList(state = initialState, action = {}) {
   }
 }
 
-export function isLoaded(globalState) {
-  return globalState.ontologyList && globalState.ontologyList.loaded;
-}
-
 export function loadOntologyList() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/ontology/loadOntologyList')
+    promise: (client) => client.get('/ontologies/loadOntologyList')
   };
 }

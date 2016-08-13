@@ -107,7 +107,7 @@ export default class VowlParser {
   }
 
   /**
-   * Gets edges from ontology object
+   * Gets edges from ontologies object
    * @return {[type]} [description]
    */
   getEdges(ont) {

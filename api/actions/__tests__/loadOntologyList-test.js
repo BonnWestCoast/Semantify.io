@@ -3,10 +3,10 @@
  */
 
 import {expect} from 'chai';
-import loadOntologyList from '../ontology/loadOntologyList';
+import loadOntologyList from '../ontologies/loadOntologyList';
 
 describe('loadOntologyList', () => {
-  it('loads ontology list correctly', () => {
+  it('loads ontologies list correctly', () => {
     return loadOntologyList().then(data => {
       let ontology = data.message;
       expect(ontology).to.deep.equal(['ontology1', 'ontology2', 'ontology3']);
