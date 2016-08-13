@@ -6,7 +6,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {asyncConnect} from 'redux-async-connect';
 import OntologyList from './OntologyList';
-// import OntologySparql from './OntologySparql';
+import OntologySparql from './OntologySparql';
 // import {loadOntologyText} from 'redux/modules/info';
 import {loadOntologyList} from '../../redux/modules/ontologyList';
 
@@ -27,13 +27,13 @@ export default class Ontology extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div id="ontology-container">
         <OntologyList list={this.props.dataList.message}/>
         <button type="submit" className="btn btn-success">Visualize</button>
         <label htmlFor="sparqlTextarea">Ontology Content: </label>
         <textarea className="form-control" id="ontology" rows="5" readOnly="readOnly" />
+        <OntologySparql />
       </div>
     )
   }

@@ -57,14 +57,6 @@ export function loadOntology() {
   };
 }
 
-export function loadOntologyList2() {
-  return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/ontologies/loadOntologyList')
-  };
-}
-
-
 export function loadOntologyText() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],

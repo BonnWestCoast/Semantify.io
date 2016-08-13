@@ -18,7 +18,10 @@ describe('OntologyList', () => {
     ontologyList: {
       loadOntologyList: () => {},
       chosenOntology: 'ontology1',
-      list: ['ontology1', 'ontology2', 'ontology3'],
+      data: {
+        message: ['ontology1', 'ontology2', 'ontology3'],
+        time: 0
+      },
       loaded: true,
       loading: false
     }
@@ -36,7 +39,7 @@ describe('OntologyList', () => {
   });
 
   it('should render with correct value', () => {
-    const children = dom.getElementsByClassName('ontologies-list-el').length;
-    expect(children).to.equal(mockStore.ontologyList.list.length);
+    const children = dom.getElementsByClassName('ontology-list-el').length;
+    expect(children).to.equal(mockStore.ontologyList.data.message.length);
   });
 });

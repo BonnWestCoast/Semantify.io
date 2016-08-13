@@ -8,7 +8,6 @@ const LOAD_FAIL = 'ontologyList/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
-  list: [],
   chosenOntology: ''
 };
 
