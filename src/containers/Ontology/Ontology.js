@@ -27,13 +27,22 @@ export default class Ontology extends Component {
   };
 
   render() {
+    const styles = require('./Ontology.scss');
     return (
-      <div id="ontology-container">
-        <OntologyList list={this.props.dataList.message}/>
-        <button type="submit" className="btn btn-success">Visualize</button>
-        <label htmlFor="sparqlTextarea">Ontology Content: </label>
-        <textarea className="form-control" id="ontology" rows="5" readOnly="readOnly" />
-        <OntologySparql />
+      <div className={styles.ontologyPage + ' container'}>
+        <div className="row">
+          <div className={styles.ontologyList}>
+            <OntologyList list={this.props.dataList.message}/>
+            <button type="submit" className="btn btn-success">Visualize</button>
+          </div>
+        </div>
+        <div className="row">
+          <label htmlFor="sparqlTextarea">Ontology Content: </label>
+          <textarea className="form-control" id="ontology" rows="5" readOnly="readOnly" />
+        </div>
+        <div className="row">
+          <OntologySparql />
+        </div>
       </div>
     )
   }

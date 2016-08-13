@@ -12,7 +12,7 @@ export default class OntologyList extends Component {
 
   render() {
     return (
-      <DropdownButton id="ontologyList" title="List of ontologies">
+      <DropdownButton id="ontologyListId" title="List of ontologies">
         {
           this.props.list.map(it => {
             return <MenuItem href="#" className="ontology-list-el" key={it}>{it}</MenuItem>
