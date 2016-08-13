@@ -15,14 +15,14 @@ import {DropdownButton, MenuItem} from 'react-bootstrap';
 }])
 @connect(
   state => ({
-    list: state.ontologyList.list,
+    data: state.ontologyList.data,
     chosenOntology: state.ontologyList.chosenOntology
   }),
   {loadOntologyList}
 )
 export default class OntologyList extends Component {
   static propTypes = {
-    list: PropTypes.array.isRequired,
+    data: PropTypes.object,
     chosenOntology: PropTypes.string
   };
 
@@ -31,10 +31,11 @@ export default class OntologyList extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <DropdownButton id="ontologyList" title="List of ontologies">
         {
-          this.props.list.map(it => {
+          this.props.data.message.map(it => {
             console.log(it)
             return <MenuItem href="#" className="ontology-list-el" key={it}>{it}</MenuItem>
           })
