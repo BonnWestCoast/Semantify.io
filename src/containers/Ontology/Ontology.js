@@ -8,6 +8,7 @@ import {asyncConnect} from 'redux-async-connect';
 import OntologyList from './OntologyList';
 import OntologySparql from './OntologySparql';
 import {loadOntologyList} from '../../redux/modules/ontologyList';
+import {Button, Modal} from 'react-bootstrap';
 
 /**
  * Component for showing ontology page
@@ -28,6 +29,18 @@ export default class Ontology extends Component {
     loadOntologyList: PropTypes.func.isRequired
   };
 
+  state = {
+    showModal: false
+  };
+
+  close = () => {
+    this.setState({ showModal: false });
+  };
+
+  open = () => {
+    this.setState({ showModal: true });
+  };
+
   constructor(props) {
     super(props);
     // TODO: probably anti-pattern
@@ -46,7 +59,9 @@ export default class Ontology extends Component {
         <div className="row">
           <div className={styles.ontologyList}>
             <OntologyList list={list} chosenOntology={chosenOntology}/>
-            <button type="submit" className="btn btn-success">Visualize</button>
+            <Button bsStyle="primary" onClick={this.open}>
+              Visualize
+            </Button>
           </div>
         </div>
         <div className="row">
@@ -59,6 +74,18 @@ export default class Ontology extends Component {
         <div className="row">
           <OntologySparql />
         </div>
+        <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Text in a modal</h4>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.close}>Close</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }
