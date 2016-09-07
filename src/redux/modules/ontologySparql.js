@@ -9,8 +9,7 @@ const UPLOAD_FAIL = 'ontologySparql/upload_fail';
 const initialState = {
   uploading: false,
   uploadingError: {},
-  uploaded: false,
-  query: ''
+  uploaded: false
 };
 
 export default function reducer(state = initialState, action = {}) {

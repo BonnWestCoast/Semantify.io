@@ -12,6 +12,7 @@ import schema from './schema';
 import schemasList from './schemasList';
 import ontologySparql from './ontologySparql';
 import ontologyList from './ontologyList';
+import ontology from './ontology';
 
 export default combineReducers({
   routing: routerReducer,
@@ -28,5 +29,6 @@ export default combineReducers({
   schema,
   schemasList,
   ontologySparql,
-  ontologyList
+  ontologyList,
+  ontology
 });

@@ -4,14 +4,23 @@
 
 import React, {Component, PropTypes} from 'react';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
+import {loadOntologyText} from 'redux/modules/ontology';
+import {connect} from 'react-redux';
 
 /**
  * Component for rendering list of ontologies
  */
+@connect(
+  state => ({
+    chosenOntology: state.ontologyList.chosenOntology
+  }),
+  {loadOntologyText}
+)
 export default class OntologyList extends Component {
   static propTypes = {
     list: PropTypes.array,
-    chosenOntology: PropTypes.string
+    chosenOntology: PropTypes.string,
+    loadOntologyText: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -26,7 +35,10 @@ export default class OntologyList extends Component {
    * @param value
      */
   onSelect = (event, value) => {
+    // TODO: dispatch action to change state
+    console.log(value);
     this.setState({chosenOntology: value});
+    this.props.loadOntologyText();
   };
 
   render() {

@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 import {asyncConnect} from 'redux-async-connect';
 import OntologyList from './OntologyList';
 import OntologySparql from './OntologySparql';
-// import {loadOntologyText} from 'redux/modules/info';
 import {loadOntologyList} from '../../redux/modules/ontologyList';
 
 /**
@@ -19,15 +18,22 @@ import {loadOntologyList} from '../../redux/modules/ontologyList';
   }
 }])
 @connect(
-  state => ({ontology: '', dataList: state.ontologyList.data}),
+  state => ({ontology: state.ontology, dataList: state.ontologyList.data}),
   {loadOntologyList}
 )
 export default class Ontology extends Component {
   static propTypes = {
-    ontology: PropTypes.string,
+    ontology: PropTypes.object,
     dataList: PropTypes.object,
     loadOntologyList: PropTypes.func.isRequired
   };
+
+  constructor(props) {
+    super(props);
+    // TODO: probably anti-pattern
+    //this.state = {ontology: {'data': {'message':''}}};
+    this.state = {ontology: props.ontology};
+  }
 
   render() {
     const styles = require('./Ontology.scss');
@@ -44,8 +50,11 @@ export default class Ontology extends Component {
           </div>
         </div>
         <div className="row">
-          <label htmlFor="sparqlTextarea">Ontology Content: </label>
-          <textarea className="form-control" id="ontology" rows="5" readOnly="readOnly" />
+          <label htmlFor="ontologyTextarea">Ontology Content: </label>
+          <textarea className="form-control"
+                    id="ontology" rows="5"
+                    value={this.state.ontology.data.message}
+                     />
         </div>
         <div className="row">
           <OntologySparql />
