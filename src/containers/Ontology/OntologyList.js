@@ -44,7 +44,7 @@ export default class OntologyList extends Component {
   render() {
     return (
       <DropdownButton id="ontologyListId"
-                      title={this.state.chosenOntology}>
+                      title={this.state.chosenOntology !== ''? this.state.chosenOntology : 'Please Choose Ontology'}>
         {
           this.props.list.map(it => {
             return <MenuItem href="#"
