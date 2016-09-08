@@ -8,6 +8,7 @@ import {asyncConnect} from 'redux-async-connect';
 import OntologyList from './OntologyList';
 import OntologySparql from './OntologySparql';
 import {loadOntologyList} from '../../redux/modules/ontologyList';
+import {clear} from '../../redux/modules/visualizer';
 import {Button, Modal} from 'react-bootstrap';
 import Visualizer from '../Visualizer/Visualizer';
 
@@ -21,13 +22,14 @@ import Visualizer from '../Visualizer/Visualizer';
 }])
 @connect(
   state => ({ontology: state.ontology, dataList: state.ontologyList.data}),
-  {loadOntologyList}
+  {loadOntologyList, clear}
 )
 export default class Ontology extends Component {
   static propTypes = {
     ontology: PropTypes.object,
     dataList: PropTypes.object,
-    loadOntologyList: PropTypes.func.isRequired
+    loadOntologyList: PropTypes.func.isRequired,
+    clear: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -42,6 +44,8 @@ export default class Ontology extends Component {
 
   close = () => {
     this.setState({ showModal: false });
+    this.props.clear();
+    React.unmountComponentAtNode(document.getElementById('visualizer'));
   };
 
   open = () => {
@@ -79,7 +83,9 @@ export default class Ontology extends Component {
             <Modal.Title>Ontology visualization</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Visualizer />
+            <div id="visualizer">
+              <Visualizer />
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>Close</Button>
