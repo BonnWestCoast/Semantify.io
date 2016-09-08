@@ -87,11 +87,6 @@ export default class App extends Component {
               </LinkContainer>
               }
               { user &&
-              <LinkContainer to="/visualizer">
-                <NavItem eventKey={3}>Visualize</NavItem>
-              </LinkContainer>
-              }
-              { user &&
               <LinkContainer to="/ontology">
                 <NavItem eventKey={7}>Ontology</NavItem>
               </LinkContainer>
