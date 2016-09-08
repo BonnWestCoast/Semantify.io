@@ -29,6 +29,10 @@ import { asyncConnect } from 'redux-async-connect';
 @connect(
   state => ({user: state.auth.user}),
   {logout, pushState: push})
+/**
+ * this is the heart of the app. The class is used to mount all other pages.
+ * Also here you can configure the navbar.
+ */
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
@@ -74,36 +78,42 @@ export default class App extends Component {
             <Navbar.Toggle/>
           </Navbar.Header>
 
-          <Navbar.Collapse eventKey={0}>
+          <Navbar.Collapse>
             <Nav navbar>
               {user &&
                 <LinkContainer to="/uploadSchema">
-                  <NavItem eventKey={1}>Upload a Schema</NavItem>
+                  <NavItem>Upload a Schema</NavItem>
                 </LinkContainer>
               }
               { user &&
               <LinkContainer to="/xmlVisualizer">
-                <NavItem eventKey={4}>Visualize XML</NavItem>
+                <NavItem>Visualize XML</NavItem>
+              </LinkContainer>
+              }
+              {
+                user &&
+              <LinkContainer to="/upload">
+                <NavItem>Upload</NavItem>
               </LinkContainer>
               }
               { user &&
               <LinkContainer to="/ontology">
-                <NavItem eventKey={7}>Ontology</NavItem>
+                <NavItem>Ontology</NavItem>
               </LinkContainer>
               }
               {
                 user &&
                 <LinkContainer to="/schemasList">
-                  <NavItem eventKey={2}>Schemas List</NavItem>
+                  <NavItem>Schemas List</NavItem>
                 </LinkContainer>
               }
               {!user &&
               <LinkContainer to="/login">
-                <NavItem eventKey={5}>Login</NavItem>
+                <NavItem>Login</NavItem>
               </LinkContainer>}
               {user &&
               <LinkContainer to="/logout">
-                <NavItem eventKey={6} className="logout-link" onClick={this.handleLogout}>
+                <NavItem className="logout-link" onClick={this.handleLogout}>
                   Logout
                 </NavItem>
               </LinkContainer>}
@@ -111,7 +121,7 @@ export default class App extends Component {
             {user &&
             <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.name}</strong>.</p>}
             <Nav navbar pullRight>
-              <NavItem eventKey={1} target="_blank" title="View on Github" href="https://github.com/BonnWestCoast/Semantify.io">
+              <NavItem target="_blank" title="View on Github" href="https://github.com/BonnWestCoast/Semantify.io">
                 <i className="fa fa-github"/>
               </NavItem>
             </Nav>
