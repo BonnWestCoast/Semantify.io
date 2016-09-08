@@ -4,6 +4,20 @@ import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { ActivableLink } from 'components'
 
+let activableLinkStyles = {
+  style: {
+    fontSize: '1.3em'
+  },
+  containerStyle: {
+    width: '50%',
+    textAlign: 'center',
+    padding: '1em'
+  },
+  activeContainerStyle: {
+    background: '#f5f5f5'
+  }
+}
+
 /**
  * This class is used to display the upload page
  */
@@ -40,8 +54,14 @@ export default class Upload extends Component {
     return (
       <div className="container">
         <Helmet title="Upload"/> {/* this is the page header */}
-        <ActivableLink to="/upload/schema">schema</ActivableLink>
-        <ActivableLink to="/upload/instance">instance</ActivableLink>
+        <div style={{display: 'flex', marginTop: '1em'}}>
+          <ActivableLink {...activableLinkStyles} to="/upload/schema">
+            Schema
+          </ActivableLink>
+          <ActivableLink {...activableLinkStyles} to="/upload/instance">
+            Instance
+          </ActivableLink>
+        </div>
         {this.props.children}
       </div>
     )

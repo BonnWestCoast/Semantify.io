@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-let defaultStyle = {}
+let defaultContainerStyle = {}
 
-let defaultActiveStyle = { // this style is applied when the link is active
+let defaultActiveContainerStyle = {}
+
+let defaultLinkStyle = {}
+
+let defaultActiveLinkStyle = { // this style is applied when the link is active
   fontWeight: 'bold'
 }
 
@@ -14,7 +18,9 @@ export default class ActivableLink extends Component {
   static propTypes = {
     to: PropTypes.string,
     style: PropTypes.object,
-    activeStyle: PropTypes.object
+    activeStyle: PropTypes.object,
+    containerStyle: PropTypes.object,
+    activeContainerStyle: PropTypes.object
   }
 
   static contextTypes = {
@@ -22,16 +28,20 @@ export default class ActivableLink extends Component {
   }
 
   render() {
-    let style = Object.assign({}, defaultStyle, this.props.style)
+    let style = Object.assign({}, defaultLinkStyle, this.props.style)
+    let containerStyle = Object.assign({}, defaultContainerStyle, this.props.containerStyle)
 
     let { router } = this.context
     if (router && router.isActive(this.props.to)) { // the link is active
-      style = Object.assign(style, defaultActiveStyle, this.props.activeStyle) // apply the active
-      // style
+      // apply active styles
+      style = Object.assign(style, defaultActiveLinkStyle, this.props.activeStyle)
+      containerStyle = Object.assign(containerStyle, defaultActiveContainerStyle, this.props.activeContainerStyle)
     }
 
     return (
-      <Link {...this.props} style={style}/>
+      <div style={containerStyle}>
+        <Link {...this.props} style={style}/>
+      </div>
     )
   }
 }
