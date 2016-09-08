@@ -8,7 +8,7 @@ import { ActivableLink } from 'components'
  * This class is used to display the upload page
  */
 @connect(
-  () => {}, // bind nothing
+  () => ({}), // bind nothing
   { pushState: push } // binding push to redux' dispatch
 )
 export default class Upload extends Component {
