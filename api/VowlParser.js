@@ -43,8 +43,6 @@ export default class VowlParser {
                   // mapping to - from (object - subject)
                   toFromLookup: ont.toFromLookup
                 };
-                console.log(finalObj.toFromLookup);
-
                 callback(finalObj);
               }
             }
