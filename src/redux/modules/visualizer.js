@@ -1,12 +1,19 @@
-const LOAD = 'redux-example/LOAD';
-const LOAD_SUCCESS = 'redux-example/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/LOAD_FAIL';
+/**
+ * Created by akorovin on 08.09.2016.
+ */
+
+const LOAD = 'visualizer/LOAD';
+const LOAD_SUCCESS = 'visualizer/LOAD_SUCCESS';
+const LOAD_FAIL = 'visualizer/LOAD_FAIL';
 
 const initialState = {
-  loaded: false
+  loaded: false,
+  data: {
+    message: ''
+  }
 };
 
-export default function info(state = initialState, action = {}) {
+export default function visualizer(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
       return {
@@ -36,10 +43,16 @@ export function isLoaded(globalState) {
   return globalState.info && globalState.info.loaded;
 }
 
-export function load() {
+export function loadXML() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/loadInfo')
+    promise: (client) => client.get('/visualizer/loadXML')
   };
 }
 
+export function loadOntology() {
+  return {
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/visualizer/loadOntology')
+  };
+}

@@ -12,7 +12,6 @@ import {
     Survey,
     NotFound,
     SchemaUpload,
-    Visualizer,
     XMLVisualizer,
     SchemasList,
     Schema,
@@ -52,7 +51,6 @@ export default (store) => {
         <Route path="uploadSchema" component={SchemaUpload}/>
         <Route path="schemasList" component={SchemasList}/>
         <Route path="schema/:id" component={Schema}/>
-        <Route path="visualizer" component={Visualizer}/>
         <Route path="xmlVisualizer" component={XMLVisualizer}/>
         <Route path="ontology" component={Ontology}/>
       </Route>

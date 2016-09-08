@@ -9,6 +9,7 @@ import OntologyList from './OntologyList';
 import OntologySparql from './OntologySparql';
 import {loadOntologyList} from '../../redux/modules/ontologyList';
 import {Button, Modal} from 'react-bootstrap';
+import Visualizer from '../Visualizer/Visualizer';
 
 /**
  * Component for showing ontology page
@@ -29,6 +30,12 @@ export default class Ontology extends Component {
     loadOntologyList: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props);
+    // TODO: probably anti-pattern
+    this.state = {ontology: props.ontology};
+  }
+
   state = {
     showModal: false
   };
@@ -40,13 +47,6 @@ export default class Ontology extends Component {
   open = () => {
     this.setState({ showModal: true });
   };
-
-  constructor(props) {
-    super(props);
-    // TODO: probably anti-pattern
-    //this.state = {ontology: {'data': {'message':''}}};
-    this.state = {ontology: props.ontology};
-  }
 
   render() {
     const styles = require('./Ontology.scss');
@@ -76,11 +76,10 @@ export default class Ontology extends Component {
         </div>
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Ontology visualization</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+            <Visualizer />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>Close</Button>

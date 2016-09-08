@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { asyncConnect } from 'redux-async-connect';
 import {connect} from 'react-redux';
 import { renderXML } from './xmlvis/renderXML';
-import { loadXML } from '../../redux/modules/info';
+import { loadXML } from '../../redux/modules/visualizer';
 
 /**
  * Class for visualizing XML files in a tree structure

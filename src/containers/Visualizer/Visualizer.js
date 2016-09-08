@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { asyncConnect } from 'redux-async-connect';
 import {connect} from 'react-redux';
 import Graph from './Graph';
-import { loadOntology } from '../../redux/modules/info';
+import { loadOntology } from '../../redux/modules/visualizer';
 
 /**
  * Class for visualizing ontologies
@@ -14,7 +14,7 @@ import { loadOntology } from '../../redux/modules/info';
   }
 }])
 @connect(
-  state => ({data: state.info.data}),
+  state => ({data: state.visualizer.data}),
   {loadOntology})
 export default class Visualizer extends Component {
   static propTypes = {
@@ -22,21 +22,18 @@ export default class Visualizer extends Component {
     loadOntology: PropTypes.func.isRequired
   };
 
-  /**
-   * On click handler
-  */
-  handleVisualize = () => {
-    console.log('initialize app attempt');
-    console.log('finish handleVisualize');
-  };
-
   render() {
+    const { data } = this.props;
+
+    if (!data || data.message === '') {
+      this.props.loadOntology();
+      return (
+        <div>Loading</div>
+      )
+    }
+
     return (
       <div className="visualize-container">
-        <button className="btn btn-success"
-                style={{marginLeft: 50}}
-                onClick={this.handleVisualize.bind(this)}>
-          Visualize</button>
           <Graph graph={this.props.data.message}/>
        </div>
     );
