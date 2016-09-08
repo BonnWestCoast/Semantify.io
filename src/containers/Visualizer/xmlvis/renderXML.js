@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {drawTree} from './treeDrawer';
 
 function xmlToArray(text) {
@@ -215,3 +217,4 @@ export function renderXML(htmlTag, file, impNodes, impAttr) {
 
   drawTree(htmlTag, jsonText, Math.max.apply(null, depthArray), maxWidth);
 }
+/* eslint-enable */

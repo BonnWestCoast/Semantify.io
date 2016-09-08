@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const d3 = require('d3');
 
 export function drawTree(selectString, treeData, maxDepth, maxWidth) {
@@ -192,3 +194,6 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
     update(d);
   }
 }
+
+
+/* eslint-enable */
