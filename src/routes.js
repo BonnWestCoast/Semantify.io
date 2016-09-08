@@ -15,7 +15,8 @@ import {
     XMLVisualizer,
     SchemasList,
     Schema,
-    Ontology
+    Ontology,
+    Upload
   } from 'containers';
 
 export default (store) => {
@@ -53,6 +54,7 @@ export default (store) => {
         <Route path="schema/:id" component={Schema}/>
         <Route path="xmlVisualizer" component={XMLVisualizer}/>
         <Route path="ontology" component={Ontology}/>
+        <Route path="upload" component={Upload}/>
       </Route>
 
       { /* Routes */ }
