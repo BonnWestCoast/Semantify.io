@@ -45,6 +45,7 @@ export default class Ontology extends Component {
   close = () => {
     this.setState({ showModal: false });
     this.props.clear();
+    React.unmountComponentAtNode(document.getElementById('visualizer'));
   };
 
   open = () => {
@@ -82,7 +83,9 @@ export default class Ontology extends Component {
             <Modal.Title>Ontology visualization</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Visualizer />
+            <div id="visualizer">
+              <Visualizer />
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>Close</Button>

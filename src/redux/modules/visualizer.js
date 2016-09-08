@@ -64,5 +64,5 @@ export function loadOntology() {
 }
 
 export function clear() {
-  return { type: CLEAR, null};
+  return { type: CLEAR };
 }

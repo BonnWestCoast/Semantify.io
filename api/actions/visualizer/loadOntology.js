@@ -8,8 +8,7 @@ const fs = require('fs');
 export default function loadOntology() {
   return new Promise((resolve) => {
     const parser = new VowlParser();
-    const fileName = '../../../../fixtures/owl/ontologyFile.owl';
-    const ontology = fs.readFileSync(__dirname + fileName).toString();
+    const ontology = fs.readFileSync('./fixtures/owl/ontologyFile.owl').toString();
 
     parser.parse(ontology,
       (data) => {
