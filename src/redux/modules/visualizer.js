@@ -5,6 +5,7 @@
 const LOAD = 'visualizer/LOAD';
 const LOAD_SUCCESS = 'visualizer/LOAD_SUCCESS';
 const LOAD_FAIL = 'visualizer/LOAD_FAIL';
+const CLEAR = 'visalizer/CLEAR';
 
 const initialState = {
   loaded: false,
@@ -21,6 +22,7 @@ export default function visualizer(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_SUCCESS:
+      console.log('LOAD SUCKS');
       return {
         ...state,
         loading: false,
@@ -33,6 +35,10 @@ export default function visualizer(state = initialState, action = {}) {
         loading: false,
         loaded: false,
         error: action.error
+      };
+    case CLEAR:
+      return {
+        ...initialState
       };
     default:
       return state;
@@ -55,4 +61,8 @@ export function loadOntology() {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/visualizer/loadOntology')
   };
+}
+
+export function clear() {
+  return { type: CLEAR, null};
 }
