@@ -17,4 +17,4 @@ export OntologyList from './Ontology/OntologyList';
 export OntologySparql from './Ontology/OntologySparql';
 export Upload from './Upload/Upload'
 export UploadSchema from './Upload/Schema/Schema'
-export UploadIntance from './Upload/Instance/Instance'
+export UploadInstance from './Upload/Instance/Instance'

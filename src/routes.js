@@ -13,6 +13,7 @@ import {
     SchemasList,
     Schema,
     Ontology,
+    Upload,
     UploadInstance,
     UploadSchema
   } from 'containers';
@@ -51,8 +52,8 @@ export default (store) => {
         <Route path="schema/:id" component={Schema}/>
         <Route path="xmlVisualizer" component={XMLVisualizer}/>
         <Route path="ontology" component={Ontology}/>
-        <Route path="upload">
-          <IndexRoute component={NotFound}/>
+        <Route path="upload" component={Upload}>
+          <IndexRoute component={UploadSchema}/>
           <Route path="schema" component={UploadSchema}/>
           <Route path="instance" component={UploadInstance}/>
         </Route>
