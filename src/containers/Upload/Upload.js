@@ -8,7 +8,7 @@ export default class Upload extends Component {
   render() {
     return (
       <div className="container">
-        <Helmet title="Upload"/>
+        <Helmet title="Upload"/> {/* this is the page header */}
         upload
       </div>
     )
