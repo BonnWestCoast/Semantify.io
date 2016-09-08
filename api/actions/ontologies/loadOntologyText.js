@@ -6,8 +6,7 @@ const fs = require('fs');
 
 export default function loadOntologyText() {
   return new Promise((resolve) => {
-    const fileName = '../../../../fixtures/owl/ontologyFile.owl';
-    const ontology = fs.readFileSync(__dirname + fileName).toString();
+    const ontology = fs.readFileSync('./fixtures/owl/ontologyFile.owl').toString();
 
     resolve({
       message: ontology,
