@@ -11,6 +11,7 @@ import {loadOntologyList} from '../../redux/modules/ontologyList';
 import {clear} from '../../redux/modules/visualizer';
 import {Button, Modal} from 'react-bootstrap';
 import Visualizer from '../Visualizer/Visualizer';
+import { loadOntology } from '../../redux/modules/visualizer';
 
 /**
  * Component for showing ontology page
@@ -22,14 +23,15 @@ import Visualizer from '../Visualizer/Visualizer';
 }])
 @connect(
   state => ({ontology: state.ontology, dataList: state.ontologyList.data}),
-  {loadOntologyList, clear}
+  {loadOntologyList, clear, loadOntology}
 )
 export default class Ontology extends Component {
   static propTypes = {
     ontology: PropTypes.object,
     dataList: PropTypes.object,
     loadOntologyList: PropTypes.func.isRequired,
-    clear: PropTypes.func.isRequired
+    clear: PropTypes.func.isRequired,
+    loadOntology: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -45,10 +47,10 @@ export default class Ontology extends Component {
   close = () => {
     this.setState({ showModal: false });
     this.props.clear();
-    React.unmountComponentAtNode(document.getElementById('visualizer'));
   };
 
   open = () => {
+    this.props.loadOntology();
     this.setState({ showModal: true });
   };
 
