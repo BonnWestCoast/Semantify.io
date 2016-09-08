@@ -37,13 +37,6 @@ export default class Upload extends Component {
   }
 
   render() {
-    let { router } = this.context
-    if (router) {
-      console.log('upload', router.isActive('/upload', true))
-      console.log('schema', router.isActive('/upload/schema'))
-      console.log('instance', router.isActive('/upload/instance'))
-    }
-
     return (
       <div className="container">
         <Helmet title="Upload"/> {/* this is the page header */}
