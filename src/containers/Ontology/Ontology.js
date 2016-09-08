@@ -60,6 +60,17 @@ export default class Ontology extends Component {
     // get first element for initializing dropdown
     const chosenOntology = list.length > 0 ? list[0] : '';
 
+    let CurrentSnipTextAreaSty = {
+      backgroundColor: '#213919',
+      border: '1px solid #314929',
+      color: '#afac87',
+      fontSize: '1em',
+      height: 'calc(50% - 20px)',
+      overflowY: 'auto',
+      padding: '5px',
+      width: 'calc(100% - 12px)'
+    };
+
     return (
       <div className={styles.ontologyPage + ' container'}>
         <div className="row">
@@ -75,6 +86,7 @@ export default class Ontology extends Component {
           <textarea className="form-control"
                     id="ontology" rows="5"
                     value={this.props.ontology.data.message}
+                    style={CurrentSnipTextAreaSty}
                      />
         </div>
         <div className="row">

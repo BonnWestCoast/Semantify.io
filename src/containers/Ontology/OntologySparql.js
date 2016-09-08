@@ -4,7 +4,6 @@
 
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-// import {loadOntologyList} from 'redux/modules/ontologyList';
 
 /**
  * Component for sending sparql query to server
