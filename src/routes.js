@@ -3,20 +3,18 @@ import {IndexRoute, Route} from 'react-router';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
 import {
     App,
-    Chat,
     Home,
-    Widgets,
     About,
     Login,
     LoginSuccess,
-    Survey,
     NotFound,
     SchemaUpload,
     XMLVisualizer,
     SchemasList,
     Schema,
     Ontology,
-    Upload
+    UploadInstance,
+    UploadSchema
   } from 'containers';
 
 export default (store) => {
@@ -47,21 +45,22 @@ export default (store) => {
 
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
-        <Route path="chat" component={Chat}/>
         <Route path="loginSuccess" component={LoginSuccess}/>
         <Route path="uploadSchema" component={SchemaUpload}/>
         <Route path="schemasList" component={SchemasList}/>
         <Route path="schema/:id" component={Schema}/>
         <Route path="xmlVisualizer" component={XMLVisualizer}/>
         <Route path="ontology" component={Ontology}/>
-        <Route path="upload" component={Upload}/>
+        <Route path="upload">
+          <IndexRoute component={NotFound}/>
+          <Route path="schema" component={UploadSchema}/>
+          <Route path="instance" component={UploadInstance}/>
+        </Route>
       </Route>
 
       { /* Routes */ }
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
-      <Route path="survey" component={Survey}/>
-      <Route path="widgets" component={Widgets}/>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
