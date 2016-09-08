@@ -44,14 +44,16 @@ export default class OntologyList extends Component {
   render() {
     return (
       <DropdownButton id="ontologyListId"
-                      title={this.state.chosenOntology !== ''? this.state.chosenOntology : 'Please Choose Ontology'}>
+                      title={this.state.chosenOntology !== '' ? this.state.chosenOntology : 'Please Choose Ontology'}>
         {
           this.props.list.map(it => {
-            return <MenuItem href="#"
-                             onSelect={this.onSelect}
-                             className="ontology-list-el"
-                             eventKey={it}
-                             key={it}>{it}</MenuItem>
+            return (
+              <MenuItem href="#"
+                        onSelect={this.onSelect}
+                        className="ontology-list-el"
+                        eventKey={it}
+                        key={it}>{it}</MenuItem>
+            )
           })
         }
       </DropdownButton>
