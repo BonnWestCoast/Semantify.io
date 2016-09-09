@@ -1,10 +1,55 @@
-import React, { Component } from 'react'
+/**
+ * created by Alexey Karpov
+ */
 
-export default class Instance extends Component {
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+// components
+import { Button, Input } from 'react-bootstrap'
+
+let buttonStyle = {
+  marginLeft: '0.5em'
+}
+
+@connect(
+  () => ({}) // bind nothing. made as a template.
+)
+export default class Schema extends Component {
+  static propTypes = {}
+
+  // uploading file button handler
+  fileUpload() {}
+
+  // visualise button handler
+  visualize() {}
+
+  // semantify button handler
+  semantify() {}
+
   render() {
     return (
       <div>
-        Instance
+        <textarea
+          className="form-control"
+          rows="12"/>
+        <div style={{marginTop: '1em'}}>
+          <Button bsStyle="primary" style={buttonStyle} onClick={::this.fileUpload}>
+            Upload from file
+          </Button>
+          <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
+            Visualize
+          </Button>
+        </div>
+        <hr/>
+        <div style={{display: 'flex'}}>
+          <Input type="text" placeholder="Ontology name"/>
+          <Button bsStyle="primary"
+            style={Object.assign({height: '34px'}, buttonStyle)}
+            onClick={this.semantify}>
+            Semantify
+          </Button>
+        </div>
       </div>
     )
   }
