@@ -13,3 +13,4 @@ export SurveyForm from './SurveyForm/SurveyForm';
 export WidgetForm from './WidgetForm/WidgetForm';
 export UploadSchemaForm from './UploadSchemaForm/UploadSchemaForm';
 export ActivableLink from './ActivableLink/ActivableLink'
+export OntologyList from './OntologyList/OntologyList'

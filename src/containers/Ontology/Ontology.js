@@ -5,13 +5,17 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {asyncConnect} from 'redux-async-connect';
-import OntologyList from './OntologyList';
-import OntologySparql from './OntologySparql';
-import {loadOntologyList} from '../../redux/modules/ontologyList';
-import {clear} from '../../redux/modules/visualizer';
-import {Button, Modal} from 'react-bootstrap';
-import Visualizer from '../Visualizer/Visualizer';
-import { loadOntology } from '../../redux/modules/visualizer';
+
+// components
+import { OntologyList } from 'components'
+import OntologySparql from './OntologySparql'
+import {Button, Modal} from 'react-bootstrap'
+import Visualizer from '../Visualizer/Visualizer'
+
+// actions
+import { loadOntology } from '../../redux/modules/visualizer'
+import { loadOntologyList } from '../../redux/modules/ontologyList'
+import { clear } from '../../redux/modules/visualizer'
 
 /**
  * Component for showing ontology page
@@ -55,9 +59,10 @@ export default class Ontology extends Component {
 
   render() {
     const styles = require('./Ontology.scss');
-    const list = this.props.dataList.message;
-    // get first element for initializing dropdown
-    const chosenOntology = list.length > 0 ? list[0] : '';
+    let list = []
+    if (this.props.dataList && this.props.dataList.message) { // if message exists
+      list = this.props.dataList.message
+    }
 
     let CurrentSnipTextAreaSty = {
       fontSize: '1em',
@@ -71,7 +76,7 @@ export default class Ontology extends Component {
       <div className={styles.ontologyPage + ' container'}>
         <div className="row">
           <div className={styles.ontologyList}>
-            <OntologyList list={list} chosenOntology={chosenOntology}/>
+            <OntologyList list={list}/>
             <Button bsStyle="primary" onClick={this.open}>
               Visualize
             </Button>
