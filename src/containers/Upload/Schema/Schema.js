@@ -1,3 +1,7 @@
+/**
+ * created by Alexey Karpov
+ */
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
@@ -31,6 +35,7 @@ export default class Schema extends Component {
           rows="12"/>
         <div style={{marginTop: '1em'}}>
           <DropdownButton
+            id="chosing_existing_schema"
             title="Choose from existing schema"/>
           <Button bsStyle="primary" style={buttonStyle} onClick={::this.fileUpload}>
             Upload from file
@@ -41,7 +46,7 @@ export default class Schema extends Component {
         </div>
         <hr/>
         <div style={{display: 'flex'}}>
-          <Input type="text"/>
+          <Input type="text" placeholder="Ontology name"/>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
             onClick={this.semantify}>
