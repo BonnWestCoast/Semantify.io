@@ -1,8 +1,18 @@
+/**
+ * Created by Alexey Karpov
+ */
+
 import React, { Component, PropTypes } from 'react'
-import Helmet from 'react-helmet'
-import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
+import {asyncConnect} from 'redux-async-connect'
+
+// components
 import { ActivableLink } from 'components'
+import Helmet from 'react-helmet'
+
+// actions
+import { push } from 'react-router-redux'
+import { loadOntologyList } from '../../redux/modules/ontologyList'
 
 let activableLinkStyles = {
   style: {
@@ -21,8 +31,13 @@ let activableLinkStyles = {
 /**
  * This class is used to display the upload page
  */
+@asyncConnect([{
+  promise: ({store: {dispatch}}) => {
+    return dispatch(loadOntologyList());
+  }
+}])
 @connect(
-  () => ({}), // bind nothing
+  () => ({}),
   { pushState: push } // binding push to redux' dispatch
 )
 export default class Upload extends Component {
@@ -62,7 +77,9 @@ export default class Upload extends Component {
             Instance
           </ActivableLink>
         </div>
-        {this.props.children}
+        <div style={{marginTop: '1em'}}>
+          {this.props.children}
+        </div>
       </div>
     )
   }

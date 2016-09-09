@@ -20,8 +20,13 @@ export default class OntologyList extends Component {
   static propTypes = {
     list: PropTypes.array,
     chosenOntology: PropTypes.string,
-    loadOntologyText: PropTypes.func.isRequired
+    loadOntologyText: PropTypes.func.isRequired,
+    defaultMessage: PropTypes.string
   };
+
+  static defaultProps = {
+    defaultMessage: 'Please Choose Ontology'
+  }
 
   constructor(props) {
     super(props);
@@ -44,7 +49,7 @@ export default class OntologyList extends Component {
   render() {
     return (
       <DropdownButton id="ontologyListId"
-                      title={this.state.chosenOntology !== '' ? this.state.chosenOntology : 'Please Choose Ontology'}>
+                      title={this.state.chosenOntology !== '' ? this.state.chosenOntology : this.props.defaultMessage}>
         {
           this.props.list.map(it => {
             return (
