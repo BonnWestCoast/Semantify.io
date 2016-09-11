@@ -40,6 +40,6 @@ export default function reducer(state = initialState, action = {}) {
 export function loadOntologyList() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/ontologies/loadOntologyList')
+    promise: (client) => client.get('/java/ontologies')
   };
 }
