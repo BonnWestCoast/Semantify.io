@@ -38,7 +38,8 @@ app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // Proxy to API server
 app.use('/api', (req, res) => {
-  if (/java/.test(req.url)) {
+  if (/\/api\/java\/*/.test(req.url)) {
+    console.error(req.url);
     proxy.web(req, res, {target: javaTargetUrl});
   }
 
