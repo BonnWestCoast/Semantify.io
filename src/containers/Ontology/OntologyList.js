@@ -38,7 +38,7 @@ export default class OntologyList extends Component {
     // TODO: dispatch action to change state
     console.log(value);
     this.setState({chosenOntology: value});
-    this.props.loadOntologyText();
+    this.props.loadOntologyText(value);
   };
 
   render() {
