@@ -39,9 +39,9 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export function loadOntologyText() {
+export function loadOntologyText(id) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/ontologies/loadOntologyText')
+    promise: (client) => client.get('/java/ontologies/' + id)
   };
 }

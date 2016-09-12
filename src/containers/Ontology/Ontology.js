@@ -86,7 +86,7 @@ export default class Ontology extends Component {
           <label htmlFor="ontologyTextarea">Ontology Content: </label>
           <textarea className="form-control"
                     id="ontology" rows="5"
-                    value={this.props.ontology.data.message}
+                    value={this.props.ontology.data.data}
                     style={CurrentSnipTextAreaSty}
                      />
         </div>
