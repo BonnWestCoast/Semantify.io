@@ -21,13 +21,17 @@ import getRoutes from './routes';
 
 const url = require('url');
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
-const javaTargetUrl = 'http://localhost:8080/rest';
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
 const proxy = httpProxy.createProxyServer({
   target: targetUrl,
   ws: true
+});
+
+const crosAPIUrl = 'http://localhost:8080/rest';
+const crosProxy = httpProxy.createProxyServer({
+  target: crosAPIUrl
 });
 
 app.use(compression());
@@ -42,7 +46,7 @@ app.use('/api', (req, res) => {
 });
 
 app.use('/java', (req, res) => {
-  proxy.web(req, res, {target: javaTargetUrl});
+  crosProxy.web(req, res, {target: crosAPIUrl});
 });
 
 app.use('/ws', (req, res) => {

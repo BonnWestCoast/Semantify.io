@@ -5,6 +5,7 @@
 import React, {Component, PropTypes} from 'react';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
 import {loadOntologyText} from 'redux/modules/ontology';
+import {changeCurrentOntology} from 'redux/modules/ontologyList';
 import {connect} from 'react-redux';
 
 /**
@@ -14,13 +15,14 @@ import {connect} from 'react-redux';
   state => ({
     chosenOntology: state.ontologyList.chosenOntology
   }),
-  {loadOntologyText}
+  {loadOntologyText, changeCurrentOntology}
 )
 export default class OntologyList extends Component {
   static propTypes = {
     list: PropTypes.array,
     chosenOntology: PropTypes.string,
-    loadOntologyText: PropTypes.func.isRequired
+    loadOntologyText: PropTypes.func.isRequired,
+    changeCurrentOntology: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -37,14 +39,15 @@ export default class OntologyList extends Component {
   onSelect = (event, value) => {
     // TODO: dispatch action to change state
     console.log(value);
-    this.setState({chosenOntology: value});
+    this.props.changeCurrentOntology(value);
+    // this.setState({chosenOntology: value});
     this.props.loadOntologyText(value);
   };
 
   render() {
     return (
       <DropdownButton id="ontologyListId"
-                      title={this.state.chosenOntology !== '' ? this.state.chosenOntology : 'Please Choose Ontology'}>
+                      title={this.props.chosenOntology !== '' ? this.props.chosenOntology : 'Please Choose Ontology'}>
         {
           this.props.list.map(it => {
             return (
