@@ -51,8 +51,8 @@ export default class OntologyList extends Component {
               <MenuItem href="#"
                         onSelect={this.onSelect}
                         className="ontology-list-el"
-                        eventKey={it}
-                        key={it}>{it}</MenuItem>
+                        eventKey={it.id}
+                        key={it.id}>{it.name}</MenuItem>
             )
           })
         }

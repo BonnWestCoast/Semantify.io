@@ -56,7 +56,7 @@ export default class Ontology extends Component {
 
   render() {
     const styles = require('./Ontology.scss');
-    const list = this.props.dataList.list;
+    const list = this.props.dataList.data;
     // get first element for initializing dropdown
     const chosenOntology = list.length > 0 ? list[0] : '';
 
