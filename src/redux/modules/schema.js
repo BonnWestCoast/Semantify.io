@@ -83,3 +83,7 @@ export function loadList() {
     })
   }
 }
+
+export function getSchemasArray(state) {
+  return Object.keys(state.list).map(key => state.list[key])
+}
