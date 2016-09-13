@@ -35,7 +35,7 @@ export default class OntologyList extends Component {
    * Changing state when selecting item in dropdown
    * @param event
    * @param value
-     */
+   */
   onSelect = (event, value) => {
     // TODO: dispatch action to change state
     console.log(value);
