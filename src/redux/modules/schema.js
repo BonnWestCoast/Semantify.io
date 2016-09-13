@@ -85,5 +85,6 @@ export function loadList() {
 }
 
 export function getSchemasArray(state) {
-  return Object.keys(state.list).map(key => state.list[key])
+  let list = state.schema.list
+  return Object.keys(list).map(key => list[key])
 }
