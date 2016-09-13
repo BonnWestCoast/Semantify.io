@@ -64,7 +64,10 @@ describe('Schema reducer and selectors', () => {
     let state
     beforeEach(() => {
       state = cloneDeep(initialState)
-      state.list = {
+      state = {
+        schema: cloneDeep(initialState)
+      }
+      state.schema.list = {
         1: {
           id: 1,
           name: 'fake schema 1'
