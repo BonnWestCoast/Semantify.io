@@ -8,13 +8,17 @@ var query = "PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
             "select * " +
             "where { ?a ?b ?c }";
 
-var options = {
+var requestString = { "data": query }
 
-    uri: url,
+var options = {
+    url: url,
     method: 'post',
     json: true,
-    body: {"data": query}
-
+    headers: {
+        "content-type": "application/json",
+    },
+    //body: JSON.stringify(requestString)
+    body: requestString
 }
 
 req = request( options, function (error, response, body) {
