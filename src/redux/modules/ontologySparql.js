@@ -45,7 +45,11 @@ export default function reducer(state = initialState, action = {}) {
 export function runSparql(id, sparql) {
   return {
     types: [UPLOAD, UPLOAD_SUCCESS, UPLOAD_FAIL],
-    promise: (client) => client.post('/java/ontologies/query/' + id, sparql)
+    promise: (client) => client.post('/java/ontologies/query/' + id, {
+      data: {
+        data: sparql
+      }
+    })
 
   };
 }
