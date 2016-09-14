@@ -5,6 +5,7 @@
 import React, {Component, PropTypes} from 'react';
 import {DropdownButton, MenuItem} from 'react-bootstrap';
 import {loadOntologyText} from 'redux/modules/ontology';
+import {changeCurrentOntology} from 'redux/modules/ontologyList';
 import {connect} from 'react-redux';
 
 /**
@@ -14,19 +15,15 @@ import {connect} from 'react-redux';
   state => ({
     chosenOntology: state.ontologyList.chosenOntology
   }),
-  {loadOntologyText}
+  {loadOntologyText, changeCurrentOntology}
 )
 export default class OntologyList extends Component {
   static propTypes = {
     list: PropTypes.array,
     chosenOntology: PropTypes.string,
     loadOntologyText: PropTypes.func.isRequired,
-    defaultMessage: PropTypes.string
+    changeCurrentOntology: PropTypes.func.isRequired
   };
-
-  static defaultProps = {
-    defaultMessage: 'Please Choose Ontology'
-  }
 
   constructor(props) {
     super(props);
@@ -42,22 +39,23 @@ export default class OntologyList extends Component {
   onSelect = (event, value) => {
     // TODO: dispatch action to change state
     console.log(value);
-    this.setState({chosenOntology: value});
-    this.props.loadOntologyText();
+    this.props.changeCurrentOntology(value);
+    // this.setState({chosenOntology: value});
+    this.props.loadOntologyText(value);
   };
 
   render() {
     return (
       <DropdownButton id="ontologyListId"
-                      title={this.state.chosenOntology !== '' ? this.state.chosenOntology : this.props.defaultMessage}>
+                      title={this.props.chosenOntology !== '' ? this.props.chosenOntology : 'Please Choose Ontology'}>
         {
           this.props.list.map(it => {
             return (
               <MenuItem href="#"
                         onSelect={this.onSelect}
                         className="ontology-list-el"
-                        eventKey={it}
-                        key={it}>{it}</MenuItem>
+                        eventKey={it.id}
+                        key={it.id}>{it.name}</MenuItem>
             )
           })
         }

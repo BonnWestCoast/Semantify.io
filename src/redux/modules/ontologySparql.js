@@ -9,7 +9,10 @@ const UPLOAD_FAIL = 'ontologySparql/upload_fail';
 const initialState = {
   uploading: false,
   uploadingError: {},
-  uploaded: false
+  uploaded: false,
+  data: {
+    data: ''
+  }
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -39,11 +42,14 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export function runSparql(state) {
+export function runSparql(id, sparql) {
   return {
     types: [UPLOAD, UPLOAD_SUCCESS, UPLOAD_FAIL],
-    promise: (client) => client.post('/sparql/runQuery', {
-      chosenOntology: state.ontologyList.chosenOntology
+    promise: (client) => client.post('/java/ontologies/query/' + id, {
+      data: {
+        data: sparql
+      }
     })
+
   };
 }
