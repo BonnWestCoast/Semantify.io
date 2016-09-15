@@ -5,6 +5,7 @@
 const LOAD = 'ontologyList/LOAD';
 const LOAD_SUCCESS = 'ontologyList/LOAD_SUCCESS';
 const LOAD_FAIL = 'ontologyList/LOAD_FAIL';
+const CHANGE = 'ontologyList/CHANGE';
 
 const initialState = {
   loaded: false,
@@ -32,6 +33,11 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         error: action.error
       };
+    case CHANGE:
+      return {
+        ...state,
+        chosenOntology: action.id
+      };
     default:
       return state;
   }
@@ -40,6 +46,13 @@ export default function reducer(state = initialState, action = {}) {
 export function loadOntologyList() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/ontologies/loadOntologyList')
+    promise: (client) => client.get('/java/ontologies')
   };
+}
+
+export function changeCurrentOntology(id) {
+  return {
+    type: CHANGE,
+    id: id
+  }
 }

@@ -5,17 +5,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {asyncConnect} from 'redux-async-connect';
-
-// components
-import { OntologyList } from 'components'
-import OntologySparql from './OntologySparql'
-import {Button, Modal} from 'react-bootstrap'
-import Visualizer from '../Visualizer/Visualizer'
-
-// actions
-import { loadOntology } from '../../redux/modules/visualizer'
-import { loadOntologyList } from '../../redux/modules/ontologyList'
-import { clear } from '../../redux/modules/visualizer'
+import OntologyList from './OntologyList';
+import OntologySparql from './OntologySparql';
+import {loadOntologyList} from '../../redux/modules/ontologyList';
+import {clear} from '../../redux/modules/visualizer';
+import {Button, Modal} from 'react-bootstrap';
+import Visualizer from '../Visualizer/Visualizer';
+import { loadOntology } from '../../redux/modules/visualizer';
 
 /**
  * Component for showing ontology page
@@ -27,12 +23,13 @@ import { clear } from '../../redux/modules/visualizer'
 }])
 @connect(
   state => ({ontology: state.ontology, dataList: state.ontologyList.data}),
-  {clear, loadOntology}
+  {loadOntologyList, clear, loadOntology}
 )
 export default class Ontology extends Component {
   static propTypes = {
     ontology: PropTypes.object,
     dataList: PropTypes.object,
+    loadOntologyList: PropTypes.func.isRequired,
     clear: PropTypes.func.isRequired,
     loadOntology: PropTypes.func.isRequired
   };
@@ -59,10 +56,9 @@ export default class Ontology extends Component {
 
   render() {
     const styles = require('./Ontology.scss');
-    let list = []
-    if (this.props.dataList && this.props.dataList.message) { // if message exists
-      list = this.props.dataList.message
-    }
+    const list = this.props.dataList.data;
+    // get first element for initializing dropdown
+    const chosenOntology = '';
 
     let CurrentSnipTextAreaSty = {
       fontSize: '1em',
@@ -76,7 +72,7 @@ export default class Ontology extends Component {
       <div className={styles.ontologyPage + ' container'}>
         <div className="row">
           <div className={styles.ontologyList}>
-            <OntologyList list={list}/>
+            <OntologyList list={list} chosenOntology={chosenOntology}/>
             <Button bsStyle="primary" onClick={this.open}>
               Visualize
             </Button>
@@ -86,7 +82,7 @@ export default class Ontology extends Component {
           <label htmlFor="ontologyTextarea">Ontology Content: </label>
           <textarea className="form-control"
                     id="ontology" rows="5"
-                    value={this.props.ontology.data.message}
+                    value={this.props.ontology.data.data}
                     style={CurrentSnipTextAreaSty}
                      />
         </div>

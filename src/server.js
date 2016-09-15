@@ -19,6 +19,7 @@ import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import getRoutes from './routes';
 
+const url = require('url');
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();
 const app = new Express();
@@ -28,14 +29,24 @@ const proxy = httpProxy.createProxyServer({
   ws: true
 });
 
+const crosAPIUrl = 'http://localhost:8080/rest';
+const crosProxy = httpProxy.createProxyServer({
+  target: crosAPIUrl
+});
+
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
+
 // Proxy to API server
 app.use('/api', (req, res) => {
   proxy.web(req, res, {target: targetUrl});
+});
+
+app.use('/java', (req, res) => {
+  crosProxy.web(req, res, {target: crosAPIUrl});
 });
 
 app.use('/ws', (req, res) => {
