@@ -8,11 +8,14 @@ export const LOAD_LIST = 'schema/load_list'
 export const LOAD_LIST_SUCCESS = 'schema/load_list_success'
 export const LOAD_LIST_FAIL = 'schema/load_list_fail'
 
+export const SELECT = 'schema/SELECT'
+
 export const initialState = {
   uploading: false,
   uploadingError: {},
   uploaded: false,
-  list: {}
+  list: {},
+  selected: null
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -50,6 +53,12 @@ export default function reducer(state = initialState, action = {}) {
     // case LOAD_LIST_FAIL:
       // return state
 
+    case SELECT:
+      return {
+        ...state,
+        selected: action.index
+      }
+
     default:
       return state;
   }
@@ -84,7 +93,28 @@ export function loadList() {
   }
 }
 
+export function select(index) {
+  return {
+    type: SELECT,
+    index
+  }
+}
+
 export function getSchemasArray(state) {
   let list = state.schema.list
   return Object.keys(list).map(key => list[key])
+    .sort((a, b) => a.id - b.id) // eslint-disable-line
+}
+
+export function getSelectedSchema(state) {
+  return state.schema.selected
+}
+
+export function getSelectedTitle(state) {
+  let selected = getSelectedSchema(state)
+  if (selected === null) {
+    return null
+  }
+  let array = getSchemasArray(state)
+  return array[selected].name
 }

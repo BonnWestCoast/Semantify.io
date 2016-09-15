@@ -7,13 +7,19 @@ import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-async-connect'
 
 // components
-import { Button, Input, DropdownButton, MenuItem } from 'react-bootstrap'
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
 
 // actions
-import { loadList as loadSchemasList } from 'redux/modules/schema'
+import {
+  loadList as loadSchemasList,
+  select as selectSchema,
+} from 'redux/modules/schema'
 
 // selectors
-import { getSchemasArray } from 'redux/modules/schema'
+import {
+  getSchemasArray,
+  getSelectedTitle,
+} from 'redux/modules/schema'
 
 let buttonStyle = {
   marginLeft: '0.5em'
@@ -26,25 +32,22 @@ let buttonStyle = {
 }])
 @connect(
   state => ({
-    schemasList: getSchemasArray(state)
-  })
+    schemasList: getSchemasArray(state),
+    dropdownButtonTitle: getSelectedTitle(state)
+  }),
+  {
+    selectSchema
+  }
 )
 /**
  * this container renders page for uploading or choosing schema
  */
 export default class Schema extends Component {
   static propTypes = {
-    schemasList: PropTypes.array.isRequired
-  }
+    schemasList: PropTypes.array.isRequired,
+    dropdownButtonTitle: PropTypes.string,
 
-  state = {
-    choosenSchemaIndex: null
-  }
-
-  onSelect(index) {
-    this.setState({
-      choosenSchemaIndex: index
-    })
+    selectSchema: PropTypes.func.isRequired
   }
 
   // uploading file button handler
@@ -53,34 +56,28 @@ export default class Schema extends Component {
   // visualise button handler
   visualize() {}
 
-  // semantify button handler
-  semantify() {}
+  // go to next step button handler
+  nextStep() {}
 
   render() {
-    let { schemasList } = this.props
-    let { choosenSchemaIndex } = this.state
-
-    let dropdownButtonTitle
-    if (choosenSchemaIndex === null) {
-      dropdownButtonTitle = 'Choose from existing schema'
-    } else {
-      dropdownButtonTitle = schemasList[choosenSchemaIndex].name
-    }
+    let { schemasList, dropdownButtonTitle } = this.props
 
     return (
       <div>
+        <span style={{fontSize: '1.4em'}}>Choose or upload schema:</span>
         <textarea
+          style={{marginTop: '1em'}}
           className="form-control"
           rows="12"/>
         <div style={{marginTop: '1em'}}>
           <DropdownButton
             id="chosing_existing_schema"
-            title={dropdownButtonTitle}>
+            title={dropdownButtonTitle || 'Choose from existing schemas'}>
             {
               schemasList.map((schema, index) => (
                 <MenuItem
                   key={schema.id}
-                  onSelect={() => this.onSelect(index)}>
+                  onSelect={() => this.props.selectSchema(index)}>
                   {schema.name}
                 </MenuItem>
               ))
@@ -95,11 +92,10 @@ export default class Schema extends Component {
         </div>
         <hr/>
         <div style={{display: 'flex'}}>
-          <Input type="text" placeholder="Ontology name"/>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
-            onClick={this.semantify}>
-            Semantify
+            onClick={this.nextStep}>
+            Next step
           </Button>
         </div>
       </div>
