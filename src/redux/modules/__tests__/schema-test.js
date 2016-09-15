@@ -4,10 +4,11 @@ import {
   LOAD_LIST_SUCCESS,
   initialState,
   getSchemasArray,
-  getSelectedSchema,
+  getSelectedSchemaIndex,
   getSelectedTitle,
   select,
   SELECT as SELECT_TYPE,
+  getSelectedSchema,
 } from '../schema'
 
 let cloneDeep = require('lodash/cloneDeep')
@@ -136,6 +137,36 @@ describe('Schema reducer and selectors', () => {
     })
   })
 
+  describe('getSelectedSchemaIndex', () => {
+    let state
+    beforeEach(() => {
+      state = {
+        schema: {
+          list: {
+            0: {
+              name: 'first schema'
+            },
+            1: {
+              name: 'second schema'
+            }
+          },
+          selected: null
+        },
+      }
+    })
+
+    it('getSelectedSchemaIndex is a function', () => {
+      expect(getSelectedSchemaIndex).to.be.a('function')
+    })
+
+    it('returns selected', () => {
+      expect(getSelectedSchemaIndex(state)).to.equal(null)
+
+      state.schema.selected = 1
+      expect(getSelectedSchemaIndex(state)).to.equal(1)
+    })
+  })
+
   describe('getSelectedSchema', () => {
     let state
     beforeEach(() => {
@@ -154,15 +185,22 @@ describe('Schema reducer and selectors', () => {
       }
     })
 
-    it('getSelectedSchema is a function', () => {
-      expect(getSelectedSchema).to.be.a('function')
+    it('is a function', () => expect(getSelectedSchema).to.be.a('function'))
+
+    it('returns null if no schema selected', () => {
+      expect(getSelectedSchema(state)).to.equal(null)
     })
 
-    it('returns selected', () => {
-      expect(getSelectedSchema(state)).to.equal(null)
+    it('returns selectedSchema', () => {
+      state.schema.selected = 0
+      expect(getSelectedSchema(state)).to.deep.equal({
+        name: 'first schema'
+      })
 
       state.schema.selected = 1
-      expect(getSelectedSchema(state)).to.equal(1)
+      expect(getSelectedSchema(state)).to.deep.equal({
+        name: 'second schema'
+      })
     })
   })
 

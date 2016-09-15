@@ -106,15 +106,24 @@ export function getSchemasArray(state) {
     .sort((a, b) => a.id - b.id) // eslint-disable-line
 }
 
-export function getSelectedSchema(state) {
+export function getSelectedSchemaIndex(state) {
   return state.schema.selected
 }
 
-export function getSelectedTitle(state) {
-  let selected = getSelectedSchema(state)
+export function getSelectedSchema(state) {
+  let selected = getSelectedSchemaIndex(state)
   if (selected === null) {
     return null
   }
   let array = getSchemasArray(state)
-  return array[selected].name
+  return array[selected]
+}
+
+export function getSelectedTitle(state) {
+  let schema = getSelectedSchema(state)
+  if (schema === null) {
+    return null
+  }
+
+  return schema.name
 }
