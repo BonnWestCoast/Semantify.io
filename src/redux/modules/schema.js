@@ -1,4 +1,5 @@
 let keyBy = require('lodash/keyBy')
+let cloneDeep = require('lodash/cloneDeep')
 
 export const UPLOAD = 'schema/upload';
 export const UPLOAD_SUCCESS = 'schema/upload_success';
@@ -9,6 +10,7 @@ export const LOAD_LIST_SUCCESS = 'schema/load_list_success'
 export const LOAD_LIST_FAIL = 'schema/load_list_fail'
 
 export const SELECT = 'schema/SELECT'
+export const USER_INPUT = 'schema/USER_INPUT'
 
 export const initialState = {
   uploading: false,
@@ -19,6 +21,8 @@ export const initialState = {
 };
 
 export default function reducer(state = initialState, action = {}) {
+  let newState
+
   switch (action.type) {
     case UPLOAD:
       return {
@@ -54,10 +58,31 @@ export default function reducer(state = initialState, action = {}) {
       // return state
 
     case SELECT:
-      return {
-        ...state,
-        selected: action.index
+      newState = cloneDeep(state)
+      newState.selected = action.index
+      // if (newState.list.new && action.index !== 'new') {
+      //  delete newState.list.new
+      // }
+
+      return newState
+
+    case USER_INPUT:
+      newState = cloneDeep(state)
+
+      if (!action.text) {
+        delete newState.list.new
+        newState.selected = null
+        return newState
       }
+
+      newState.selected = 'new'
+      newState.list.new = {
+        id: 'new',
+        content: action.text,
+        name: 'new',
+      }
+
+      return newState
 
     default:
       return state;
@@ -80,23 +105,33 @@ export function loadList() {
       setTimeout(() => {
         resolve([{
           id: 1,
-          name: 'fake schema 1'
+          name: 'fake schema 1',
+          content: 'some content 1',
         }, {
           id: 2,
-          name: 'fake schema 2'
+          name: 'fake schema 2',
+          content: 'some content 2',
         }, {
           id: 3,
-          name: 'fake schema 3'
+          name: 'fake schema 3',
+          content: 'some content 3',
         }])
-      }, 1000)
+      }, 0)
     })
   }
 }
 
 export function select(index) {
   return {
-    type: SELECT,
-    index
+    index,
+    type: SELECT
+  }
+}
+
+export function userInput(text) {
+  return {
+    text,
+    type: USER_INPUT
   }
 }
 
@@ -115,8 +150,8 @@ export function getSelectedSchema(state) {
   if (selected === null) {
     return null
   }
-  let array = getSchemasArray(state)
-  return array[selected]
+
+  return state.schema.list[selected]
 }
 
 export function getSelectedTitle(state) {
@@ -126,4 +161,21 @@ export function getSelectedTitle(state) {
   }
 
   return schema.name
+}
+
+export function getNewSchema(state) {
+  return state.schema.list.new
+}
+
+export function doesUserCreateNewSchema(state) {
+  return !!getNewSchema(state)
+}
+
+export function getSelectedSchemaContent(state) {
+  let schema = getSelectedSchema(state)
+  if (schema === null) {
+    return null
+  }
+
+  return schema.content
 }

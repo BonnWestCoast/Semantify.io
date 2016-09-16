@@ -13,12 +13,16 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
 import {
   loadList as loadSchemasList,
   select as selectSchema,
+  userInput as schemaUserInput,
 } from 'redux/modules/schema'
 
 // selectors
 import {
   getSchemasArray,
   getSelectedTitle,
+  getSelectedSchema,
+  doesUserCreateNewSchema,
+  getSelectedSchemaContent,
 } from 'redux/modules/schema'
 
 let buttonStyle = {
@@ -33,10 +37,14 @@ let buttonStyle = {
 @connect(
   state => ({
     schemasList: getSchemasArray(state),
-    dropdownButtonTitle: getSelectedTitle(state)
+    dropdownButtonTitle: getSelectedTitle(state),
+    selectedSchema: getSelectedSchema(state),
+    creatingNewSchema: doesUserCreateNewSchema(state),
+    inputContent: getSelectedSchemaContent(state),
   }),
   {
-    selectSchema
+    selectSchema,
+    schemaUserInput,
   }
 )
 /**
@@ -46,8 +54,12 @@ export default class Schema extends Component {
   static propTypes = {
     schemasList: PropTypes.array.isRequired,
     dropdownButtonTitle: PropTypes.string,
+    selectedSchema: PropTypes.object,
+    creatingNewSchema: PropTypes.bool.isRequired,
+    inputContent: PropTypes.string,
 
-    selectSchema: PropTypes.func.isRequired
+    selectSchema: PropTypes.func.isRequired,
+    schemaUserInput: PropTypes.func.isRequired,
   }
 
   // uploading file button handler
@@ -59,8 +71,21 @@ export default class Schema extends Component {
   // go to next step button handler
   nextStep() {}
 
+  // for input custom schema
+  editSchema({ target: { value } }) {
+    if (this.props.selectedSchema && this.props.selectedSchema !== 'new') { // reset schema only if it is chosen previously.
+      this.props.selectSchema(null)
+    }
+
+    this.props.schemaUserInput(value)
+  }
+
+  nextStepDisabled() {
+    return !this.props.selectedSchema && !this.props.creatingNewSchema
+  }
+
   render() {
-    let { schemasList, dropdownButtonTitle } = this.props
+    let { schemasList, dropdownButtonTitle, inputContent } = this.props
 
     return (
       <div>
@@ -68,16 +93,20 @@ export default class Schema extends Component {
         <textarea
           style={{marginTop: '1em'}}
           className="form-control"
-          rows="12"/>
+          rows="12"
+          value={inputContent}
+          onChange={::this.editSchema}
+          /> {/** we reset selected schema if user prefers to input the new one. */}
+
         <div style={{marginTop: '1em'}}>
           <DropdownButton
             id="chosing_existing_schema"
             title={dropdownButtonTitle || 'Choose from existing schemas'}>
             {
-              schemasList.map((schema, index) => (
+              schemasList.map((schema) => (
                 <MenuItem
                   key={schema.id}
-                  onSelect={() => this.props.selectSchema(index)}>
+                  onSelect={() => this.props.selectSchema(schema.id)}>
                   {schema.name}
                 </MenuItem>
               ))
@@ -94,7 +123,8 @@ export default class Schema extends Component {
         <div style={{display: 'flex'}}>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
-            onClick={this.nextStep}>
+            onClick={this.nextStep}
+            disabled={this.nextStepDisabled()}>
             Next step
           </Button>
         </div>
