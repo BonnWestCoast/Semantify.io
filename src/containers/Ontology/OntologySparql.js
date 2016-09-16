@@ -19,7 +19,7 @@ import {runSparql} from 'redux/modules/ontologySparql';
 export default class OntologySparql extends Component {
   static propTypes = {
     chosenOntology: PropTypes.string,
-    result: PropTypes.string,
+    result: PropTypes.object,
     runSparql: PropTypes.func
   };
 
