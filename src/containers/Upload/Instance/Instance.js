@@ -9,8 +9,12 @@ import { connect } from 'react-redux'
 import { Button, Input } from 'react-bootstrap'
 import { FileUploader } from 'components'
 
+// actions
+import { userInput as instanceUserInput } from 'redux/modules/instance'
+
 // selectors
 import { getSelectedSchema } from 'redux/modules/schema'
+import { getSelectedInstanceContent } from 'redux/modules/instance'
 
 let buttonStyle = {
   marginLeft: '0.5em'
@@ -19,12 +23,19 @@ let buttonStyle = {
 @connect(
   state => ({
     selectedSchema: getSelectedSchema(state),
-  }) // bind nothing. made as a template.
+    inputContent: getSelectedInstanceContent(state),
+  }), {
+    instanceUserInput
+  }
 )
 export default class Schema extends Component {
   static propTypes = {
     // from @connect
     selectedSchema: PropTypes.object,
+    inputContent: PropTypes.string,
+
+    // bind functions
+    instanceUserInput: PropTypes.func.isRequired,
   }
 
   static contextTypes = {
@@ -33,13 +44,13 @@ export default class Schema extends Component {
 
   componentDidMount() {
     if (!this.props.selectedSchema) {            // if no schema selected then
-      this.context.router.push('/upload/schema') // redirect to upload schema step
+      // this.context.router.push('/upload/schema') // redirect to upload schema step
     }
   }
 
   // when user edits text
   editInstance(value) {
-    console.log(value)
+    this.props.instanceUserInput(value)
   }
 
   // visualise button handler
@@ -49,11 +60,15 @@ export default class Schema extends Component {
   semantify() {}
 
   render() {
+    let { inputContent } = this.props
+
     return (
       <div>
         <textarea
           className="form-control"
-          rows="12"/>
+          rows="12"
+          value={inputContent}
+          onChange={event => this.editInstance(event.target.value)}/>
         <div style={{marginTop: '1em'}}>
           <FileUploader onChange={::this.editInstance}/>
           <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>

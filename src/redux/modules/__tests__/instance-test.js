@@ -7,11 +7,18 @@ import reducer, {
   USER_INPUT,
   userInput,
   initialState,
-} from '../schema'
+
+  // selectors
+  getStore,
+  getSelectedId,
+  getList,
+  getSelected,
+  getSelectedContent,
+} from '../instance'
 
 import cloneDeep from 'lodash/cloneDeep'
 
-describe('schema reducer and selectors', () => {
+describe('instance reducer and selectors', () => {
   it('reducer is function', () => {
     expect(reducer).to.be.ok // eslint-disable-line
     expect(reducer).to.be.a('function')
@@ -51,6 +58,66 @@ describe('schema reducer and selectors', () => {
       expect(result.list.new.id).to.equal('new')
       expect(result.list.new.name).to.equal('new')
       expect(result.list.new.content).to.equal('some text')
+    })
+  })
+
+  describe('selectors', () => {
+    let state
+    let store
+    let list
+    beforeEach(() => {
+      list = {
+        'new': {
+          id: 'new',
+          name: 'new',
+          content: 'text',
+        },
+      }
+
+      store = {
+        list,
+        selected: 'new',
+      }
+
+      state = {
+        instance: store
+      }
+    })
+
+    it('getStore return instance store', () => {
+      expect(getStore(state)).to.deep.equal(store)
+    })
+
+    it('getSelectedId return selected id', () => {
+      expect(getSelectedId(state)).to.equal('new')
+
+      state = cloneDeep(state)
+      state.instance.selected = null
+      expect(getSelectedId(state)).to.equal(null)
+    })
+
+    it('getList returns list', () => {
+      expect(getList(state)).to.deep.equal(list)
+    })
+
+    it('getSelected returns selected instance', () => {
+      expect(getSelected(state)).to.deep.equal({
+        id: 'new',
+        name: 'new',
+        content: 'text',
+      })
+
+      state = cloneDeep(state)
+      state.instance.selected = null
+      expect(getSelected(state)).to.equal(null)
+    })
+
+    it('getSelectedContent', () => {
+      expect(getSelectedContent(state)).to.equal('text')
+
+      state = cloneDeep(state)
+      state.instance.selected = null
+      expect(getSelected(state)).to.equal(null)
     })
   })
 })
