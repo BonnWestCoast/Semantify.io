@@ -1,3 +1,7 @@
+/**
+ * created by Alexey Karpov
+ */
+
 import React, { Component, PropTypes } from 'react'
 
 let inputStyle = {

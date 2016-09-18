@@ -1,3 +1,8 @@
+/**
+ * created by Alexey Karpov
+ */
+
+
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 

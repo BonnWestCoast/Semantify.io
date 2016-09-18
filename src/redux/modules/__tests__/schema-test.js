@@ -1,3 +1,7 @@
+/**
+ * created by Alexey Karpov
+ */
+
 import { expect } from 'chai'
 import reducer from '../schema'
 import {
