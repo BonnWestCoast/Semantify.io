@@ -55,7 +55,7 @@ export default class Schema extends Component {
 
   componentDidMount() {
     if (!this.props.selectedSchema) {            // if no schema selected then
-      // this.context.router.push('/upload/schema') // redirect to upload schema step
+      this.context.router.push('/upload/schema') // redirect to upload schema step
     }
   }
 
