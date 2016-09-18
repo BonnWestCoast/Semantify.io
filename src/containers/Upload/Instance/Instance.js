@@ -10,11 +10,14 @@ import { Button, Input } from 'react-bootstrap'
 import { FileUploader } from 'components'
 
 // actions
-import { userInput as instanceUserInput } from 'redux/modules/instance'
+import { userInput as instanceUserInput, createOntology } from 'redux/modules/instance'
 
 // selectors
 import { getSelectedSchema } from 'redux/modules/schema'
-import { getSelectedContent as getSelectedInstanceContent } from 'redux/modules/instance'
+import {
+  getSelectedContent as getSelectedInstanceContent,
+  getSelected as getSelectedInstance
+} from 'redux/modules/instance'
 
 let buttonStyle = {
   marginLeft: '0.5em'
@@ -23,23 +26,31 @@ let buttonStyle = {
 @connect(
   state => ({
     selectedSchema: getSelectedSchema(state),
+    selectedInstance: getSelectedInstance(state),
     inputContent: getSelectedInstanceContent(state),
   }), {
-    instanceUserInput
+    instanceUserInput,
+    createOntology,
   }
 )
 export default class Schema extends Component {
   static propTypes = {
     // from @connect
     selectedSchema: PropTypes.object,
+    selectedInstance: PropTypes.object,
     inputContent: PropTypes.string,
 
     // bind functions
     instanceUserInput: PropTypes.func.isRequired,
+    createOntology: PropTypes.func.isRequired,
   }
 
   static contextTypes = {
     router: React.PropTypes.object // injecting react-router
+  }
+
+  state = {
+    ontologyName: ''
   }
 
   componentDidMount() {
@@ -57,7 +68,9 @@ export default class Schema extends Component {
   visualize() {}
 
   // semantify button handler
-  semantify() {}
+  semantify() {
+    this.props.createOntology(this.state.ontologyName)
+  }
 
   render() {
     let { inputContent } = this.props
@@ -77,10 +90,14 @@ export default class Schema extends Component {
         </div>
         <hr/>
         <div style={{display: 'flex'}}>
-          <Input type="text" placeholder="Ontology name"/>
+          <Input
+            type="text"
+            value={this.state.ontologyName}
+            placeholder="Ontology name"
+            onChange={event => this.setState({ ontologyName: event.target.value })}/>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
-            onClick={this.semantify}>
+            onClick={::this.semantify}>
             Semantify
           </Button>
         </div>

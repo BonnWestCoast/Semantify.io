@@ -6,6 +6,8 @@ import { createSelector as selector } from 'reselect'
 
 import createReducer from './lib/createReducer'
 
+import { getSelectedSchema } from './schema'
+
 export const USER_INPUT = 'instance/USER_INPUT'
 
 export let initialState = {
@@ -33,15 +35,6 @@ export let handlers = {
 export default createReducer(initialState, handlers)
 
 
-// actions
-export function userInput(text) {
-  return {
-    text,
-    type: USER_INPUT,
-  }
-}
-
-
 // selectors
 export let getStore = state => state.instance
 
@@ -66,3 +59,21 @@ export let getSelectedContent = selector(
   selected => selected ? selected.content : null
 )
 
+
+// actions
+export function userInput(text) {
+  return {
+    text,
+    type: USER_INPUT,
+  }
+}
+
+export function createOntology(ontologyName) {
+  return (dispatch, getState) => { // redux-thunk middleware
+    let state = getState()
+    let schema = getSelectedSchema(state)
+    let instance = getSelected(state)
+
+    console.log(schema, instance, ontologyName)
+  }
+}
