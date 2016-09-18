@@ -8,6 +8,7 @@ import { asyncConnect } from 'redux-async-connect'
 
 // components
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
+import { FileUploader } from 'components'
 
 // actions
 import {
@@ -62,17 +63,22 @@ export default class Schema extends Component {
     schemaUserInput: PropTypes.func.isRequired,
   }
 
-  // uploading file button handler
-  fileUpload() {}
+  static contextTypes = {
+    router: React.PropTypes.object // injecting react-router
+  }
 
   // visualise button handler
   visualize() {}
 
   // go to next step button handler
-  nextStep() {}
+  nextStep() {
+    if (this.context.router) {
+      this.context.router.push('/upload/instance')
+    }
+  }
 
   // for input custom schema
-  editSchema({ target: { value } }) {
+  editSchema(value) {
     if (this.props.selectedSchema && this.props.selectedSchema !== 'new') { // reset schema only if it is chosen previously.
       this.props.selectSchema(null)
     }
@@ -95,7 +101,7 @@ export default class Schema extends Component {
           className="form-control"
           rows="12"
           value={inputContent}
-          onChange={::this.editSchema}
+          onChange={event => this.editSchema(event.target.value)}
           /> {/** we reset selected schema if user prefers to input the new one. */}
 
         <div style={{marginTop: '1em'}}>
@@ -112,9 +118,7 @@ export default class Schema extends Component {
               ))
             }
           </DropdownButton>
-          <Button bsStyle="primary" style={buttonStyle} onClick={::this.fileUpload}>
-            Upload from file
-          </Button>
+          <FileUploader onChange={::this.editSchema}/>
           <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
             Visualize
           </Button>
@@ -123,7 +127,7 @@ export default class Schema extends Component {
         <div style={{display: 'flex'}}>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
-            onClick={this.nextStep}
+            onClick={::this.nextStep}
             disabled={this.nextStepDisabled()}>
             Next step
           </Button>

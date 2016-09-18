@@ -14,3 +14,4 @@ export WidgetForm from './WidgetForm/WidgetForm';
 export UploadSchemaForm from './UploadSchemaForm/UploadSchemaForm';
 export ActivableLink from './ActivableLink/ActivableLink'
 export OntologyList from './OntologyList/OntologyList'
+export FileUploader from './FileUploader/FileUploader'
