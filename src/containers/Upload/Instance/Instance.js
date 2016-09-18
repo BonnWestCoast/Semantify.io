@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 
 // components
 import { Button, Input } from 'react-bootstrap'
+import { FileUploader } from 'components'
 
 let buttonStyle = {
   marginLeft: '0.5em'
@@ -34,9 +35,7 @@ export default class Schema extends Component {
           className="form-control"
           rows="12"/>
         <div style={{marginTop: '1em'}}>
-          <Button bsStyle="primary" style={buttonStyle} onClick={::this.fileUpload}>
-            Upload from file
-          </Button>
+          <FileUploader onChange={::this.editInstance}/>
           <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
             Visualize
           </Button>
