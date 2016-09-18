@@ -2,25 +2,45 @@
  * created by Alexey Karpov
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // components
 import { Button, Input } from 'react-bootstrap'
 import { FileUploader } from 'components'
 
+// selectors
+import { getSelectedSchema } from 'redux/modules/schema'
+
 let buttonStyle = {
   marginLeft: '0.5em'
 }
 
 @connect(
-  () => ({}) // bind nothing. made as a template.
+  state => ({
+    selectedSchema: getSelectedSchema(state),
+  }) // bind nothing. made as a template.
 )
 export default class Schema extends Component {
-  static propTypes = {}
+  static propTypes = {
+    // from @connect
+    selectedSchema: PropTypes.object,
+  }
 
-  // uploading file button handler
-  fileUpload() {}
+  static contextTypes = {
+    router: React.PropTypes.object // injecting react-router
+  }
+
+  componentDidMount() {
+    if (!this.props.selectedSchema) {            // if no schema selected then
+      this.context.router.push('/upload/schema') // redirect to upload schema step
+    }
+  }
+
+  // when user edits text
+  editInstance(value) {
+    console.log(value)
+  }
 
   // visualise button handler
   visualize() {}
