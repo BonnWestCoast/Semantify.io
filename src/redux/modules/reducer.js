@@ -7,6 +7,7 @@ import auth from './auth';
 import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
+import instance from './instance'
 import widgets from './widgets';
 import schema from './schema';
 import schemasList from './schemasList';
@@ -26,11 +27,12 @@ export default combineReducers({
     counter3: counter
   }),
   info,
+  instance,
   widgets,
   schema,
   schemasList,
   ontologySparql,
   ontologyList,
   ontology,
-  visualizer
+  visualizer,
 });

@@ -14,7 +14,7 @@ import { userInput as instanceUserInput } from 'redux/modules/instance'
 
 // selectors
 import { getSelectedSchema } from 'redux/modules/schema'
-import { getSelectedInstanceContent } from 'redux/modules/instance'
+import { getSelectedContent as getSelectedInstanceContent } from 'redux/modules/instance'
 
 let buttonStyle = {
   marginLeft: '0.5em'
