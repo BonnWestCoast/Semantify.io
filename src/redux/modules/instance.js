@@ -9,6 +9,9 @@ import createReducer from './lib/createReducer'
 import { getSelectedSchema } from './schema'
 
 export const USER_INPUT = 'instance/USER_INPUT'
+export const CREATE_ONTOLOGY = 'instance/CREATE_ONTOLOGY'
+export const CREATE_ONTOLOGY_SUCCESS = 'instance/CREATE_ONTOLOGY_SUCCESS'
+export const CREATE_ONTOLOGY_FAIL = 'instance/CREATE_ONTOLOGY_FAIL'
 
 export let initialState = {
   list: {},
@@ -68,12 +71,21 @@ export function userInput(text) {
   }
 }
 
-export function createOntology(ontologyName) {
+export function createOntology(ontName) {
   return (dispatch, getState) => { // redux-thunk middleware
     let state = getState()
     let schema = getSelectedSchema(state)
     let instance = getSelected(state)
 
-    console.log(schema, instance, ontologyName)
+    dispatch({
+      types: [CREATE_ONTOLOGY, CREATE_ONTOLOGY_SUCCESS, CREATE_ONTOLOGY_FAIL],
+      promise: client => client.post('/java/ontologies/', {
+        data: {
+          schema: schema.content,
+          instance: instance.content,
+          ontName,
+        },
+      }),
+    })
   }
 }
