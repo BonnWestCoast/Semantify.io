@@ -2,55 +2,134 @@
  * created by Alexey Karpov
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { asyncConnect } from 'redux-async-connect'
 
 // components
-import { Button, Input, DropdownButton } from 'react-bootstrap'
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
+import { FileUploader } from 'components'
+
+// actions
+import {
+  loadList as loadSchemasList,
+  select as selectSchema,
+  userInput as schemaUserInput,
+} from 'redux/modules/schema'
+
+// selectors
+import {
+  getSchemasArray,
+  getSelectedTitle,
+  getSelectedSchema,
+  doesUserCreateNewSchema,
+  getSelectedSchemaContent,
+} from 'redux/modules/schema'
 
 let buttonStyle = {
   marginLeft: '0.5em'
 }
 
+@asyncConnect([{
+  promise: ({ store: { dispatch } }) => {
+    return dispatch(loadSchemasList()) // firstly load list of schemas
+  }
+}])
 @connect(
-  () => ({}) // bind nothing. made as a template.
+  state => ({
+    schemasList: getSchemasArray(state),
+    dropdownButtonTitle: getSelectedTitle(state),
+    selectedSchema: getSelectedSchema(state),
+    creatingNewSchema: doesUserCreateNewSchema(state),
+    inputContent: getSelectedSchemaContent(state),
+  }),
+  {
+    selectSchema,
+    schemaUserInput,
+  }
 )
+/**
+ * this container renders page for uploading or choosing schema
+ */
 export default class Schema extends Component {
-  static propTypes = {}
+  static propTypes = {
+    schemasList: PropTypes.array.isRequired,
+    dropdownButtonTitle: PropTypes.string,
+    selectedSchema: PropTypes.object,
+    creatingNewSchema: PropTypes.bool.isRequired,
+    inputContent: PropTypes.string,
 
-  // uploading file button handler
-  fileUpload() {}
+    selectSchema: PropTypes.func.isRequired,
+    schemaUserInput: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.object // injecting react-router
+  }
 
   // visualise button handler
   visualize() {}
 
-  // semantify button handler
-  semantify() {}
+  // go to next step button handler
+  nextStep() {
+    if (this.context.router) {
+      this.context.router.push('/upload/instance')
+    }
+  }
+
+  // for input custom schema
+  editSchema(value) {
+    if (this.props.selectedSchema && this.props.selectedSchema !== 'new') { // reset schema only if it is chosen previously.
+      this.props.selectSchema(null)
+    }
+
+    this.props.schemaUserInput(value)
+  }
+
+  nextStepDisabled() {
+    return !this.props.selectedSchema && !this.props.creatingNewSchema
+  }
 
   render() {
+    let { schemasList, dropdownButtonTitle, inputContent } = this.props
+
     return (
       <div>
+        <span style={{fontSize: '1.4em'}}>Choose or upload schema:</span>
         <textarea
+          style={{marginTop: '1em'}}
           className="form-control"
-          rows="12"/>
+          rows="12"
+          value={inputContent}
+          onChange={event => this.editSchema(event.target.value)}
+          /> {/** we reset selected schema if user prefers to input the new one. */}
+
         <div style={{marginTop: '1em'}}>
           <DropdownButton
             id="chosing_existing_schema"
-            title="Choose from existing schema"/>
-          <Button bsStyle="primary" style={buttonStyle} onClick={::this.fileUpload}>
-            Upload from file
-          </Button>
+            title={dropdownButtonTitle || 'Choose from existing schemas'}>
+            {
+              schemasList.map((schema) => (
+                <MenuItem
+                  key={schema.id}
+                  onSelect={() => this.props.selectSchema(schema.id)}>
+                  {schema.name}
+                </MenuItem>
+              ))
+            }
+          </DropdownButton>
+          <FileUploader onChange={::this.editSchema}/>
           <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
             Visualize
           </Button>
         </div>
         <hr/>
         <div style={{display: 'flex'}}>
-          <Input type="text" placeholder="Ontology name"/>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
-            onClick={this.semantify}>
-            Semantify
+            onClick={::this.nextStep}
+            disabled={this.nextStepDisabled()}>
+            Next step
           </Button>
         </div>
       </div>

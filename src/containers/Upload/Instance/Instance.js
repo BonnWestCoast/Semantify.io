@@ -2,51 +2,102 @@
  * created by Alexey Karpov
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // components
 import { Button, Input } from 'react-bootstrap'
+import { FileUploader } from 'components'
+
+// actions
+import { userInput as instanceUserInput, createOntology } from 'redux/modules/instance'
+
+// selectors
+import { getSelectedSchema } from 'redux/modules/schema'
+import {
+  getSelectedContent as getSelectedInstanceContent,
+  getSelected as getSelectedInstance
+} from 'redux/modules/instance'
 
 let buttonStyle = {
   marginLeft: '0.5em'
 }
 
 @connect(
-  () => ({}) // bind nothing. made as a template.
+  state => ({
+    selectedSchema: getSelectedSchema(state),
+    selectedInstance: getSelectedInstance(state),
+    inputContent: getSelectedInstanceContent(state),
+  }), {
+    instanceUserInput,
+    createOntology,
+  }
 )
 export default class Schema extends Component {
-  static propTypes = {}
+  static propTypes = {
+    // from @connect
+    selectedSchema: PropTypes.object,
+    selectedInstance: PropTypes.object,
+    inputContent: PropTypes.string,
 
-  // uploading file button handler
-  fileUpload() {}
+    // bind functions
+    instanceUserInput: PropTypes.func.isRequired,
+    createOntology: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.object // injecting react-router
+  }
+
+  state = {
+    ontologyName: ''
+  }
+
+  componentDidMount() {
+    if (!this.props.selectedSchema) {            // if no schema selected then
+      this.context.router.push('/upload/schema') // redirect to upload schema step
+    }
+  }
+
+  // when user edits text
+  editInstance(value) {
+    this.props.instanceUserInput(value)
+  }
 
   // visualise button handler
   visualize() {}
 
   // semantify button handler
-  semantify() {}
+  semantify() {
+    this.props.createOntology(this.state.ontologyName)
+  }
 
   render() {
+    let { inputContent } = this.props
+
     return (
       <div>
         <textarea
           className="form-control"
-          rows="12"/>
+          rows="12"
+          value={inputContent}
+          onChange={event => this.editInstance(event.target.value)}/>
         <div style={{marginTop: '1em'}}>
-          <Button bsStyle="primary" style={buttonStyle} onClick={::this.fileUpload}>
-            Upload from file
-          </Button>
+          <FileUploader onChange={::this.editInstance}/>
           <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
             Visualize
           </Button>
         </div>
         <hr/>
         <div style={{display: 'flex'}}>
-          <Input type="text" placeholder="Ontology name"/>
+          <Input
+            type="text"
+            value={this.state.ontologyName}
+            placeholder="Ontology name"
+            onChange={event => this.setState({ ontologyName: event.target.value })}/>
           <Button bsStyle="primary"
             style={Object.assign({height: '34px'}, buttonStyle)}
-            onClick={this.semantify}>
+            onClick={::this.semantify}>
             Semantify
           </Button>
         </div>

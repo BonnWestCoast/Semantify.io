@@ -20,7 +20,7 @@ export default class SchemasList extends Component {
         <h1>Schemas List</h1>
         <ul>
           {
-            this.props.list.map(it =>
+            (this.props.list || []).map(it =>
               <li key={it.id}>
                 <Link to={`/schema/${it.id}`}>{it.name}</Link>
               </li>
