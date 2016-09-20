@@ -6,11 +6,16 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // components
-import { Button, Input } from 'react-bootstrap'
+import { Button, Input, Alert } from 'react-bootstrap'
 import { FileUploader } from 'components'
+import Spinner from 'react-spinkit'
 
 // actions
-import { userInput as instanceUserInput, createOntology } from 'redux/modules/instance'
+import {
+  userInput as instanceUserInput,
+  createOntology,
+  getCreatingOntologyStatus, // selector
+} from 'redux/modules/instance'
 
 // selectors
 import { getSelectedSchema } from 'redux/modules/schema'
@@ -28,6 +33,7 @@ let buttonStyle = {
     selectedSchema: getSelectedSchema(state),
     selectedInstance: getSelectedInstance(state),
     inputContent: getSelectedInstanceContent(state),
+    creatingOntologyStatus: getCreatingOntologyStatus(state),
   }), {
     instanceUserInput,
     createOntology,
@@ -39,6 +45,7 @@ export default class Schema extends Component {
     selectedSchema: PropTypes.object,
     selectedInstance: PropTypes.object,
     inputContent: PropTypes.string,
+    creatingOntologyStatus: PropTypes.object,
 
     // bind functions
     instanceUserInput: PropTypes.func.isRequired,
@@ -72,8 +79,29 @@ export default class Schema extends Component {
     this.props.createOntology(this.state.ontologyName)
   }
 
+  renderAlert() {
+    let { creatingOntologyStatus } = this.props
+    if (creatingOntologyStatus.error) {
+      return (
+        <Alert bsStyle="danger">
+          {creatingOntologyStatus.error}
+        </Alert>
+      )
+    }
+
+    if (creatingOntologyStatus.successMessage) {
+      return (
+        <Alert bsStyle="success">
+          {creatingOntologyStatus.successMessage}
+        </Alert>
+      )
+    }
+
+    return null
+  }
+
   render() {
-    let { inputContent } = this.props
+    let { inputContent, creatingOntologyStatus } = this.props
 
     return (
       <div>
@@ -100,7 +128,14 @@ export default class Schema extends Component {
             onClick={::this.semantify}>
             Semantify
           </Button>
+          <div style={{marginLeft: '0.5em'}}>
+          {
+            creatingOntologyStatus.run &&
+            <Spinner spinnerName="cube-grid" />
+          }
+          </div>
         </div>
+        {this.renderAlert()}
       </div>
     )
   }
