@@ -14,6 +14,12 @@ import reducer, {
   getList,
   getSelected,
   getSelectedContent,
+  getStatuses,
+  getCreatingOntologyStatus,
+
+  CREATE_ONTOLOGY,
+  CREATE_ONTOLOGY_SUCCESS,
+  CREATE_ONTOLOGY_FAIL,
 } from '../instance'
 
 import cloneDeep from 'lodash/cloneDeep'
@@ -61,10 +67,80 @@ describe('instance reducer and selectors', () => {
     })
   })
 
+  describe('CREATE_ONTOLOGY', () => {
+    let state
+    let action
+    let result
+    beforeEach(() => {
+      state = cloneDeep(initialState)
+      action = {
+        type: CREATE_ONTOLOGY,
+      }
+      result = reducer(state, action)
+    })
+
+    it('changes status to run: true', () => {
+      expect(result.statuses.creatingOntology.run).to.equal(true)
+    })
+
+    it('resets error and successMessage', () => {
+      state.statuses.creatingOntology.error = new Error()
+      state.statuses.creatingOntology.successMessage = 'success!'
+      result = reducer(state, action)
+      expect(result.statuses.creatingOntology.error).to.equal(null)
+      expect(result.statuses.creatingOntology.successMessage).to.equal('')
+    })
+  })
+
+  describe('CREATE_ONTOLOGY_SUCCESS', () => {
+    let state
+    let action
+    let result
+    beforeEach(() => {
+      state = cloneDeep(initialState)
+      action = {
+        type: CREATE_ONTOLOGY_SUCCESS,
+      }
+      result = reducer(state, action)
+    })
+
+    it('changes status', () => {
+      expect(result.statuses.creatingOntology).to.deep.equal({
+        run: false,
+        error: null,
+        successMessage: 'Ontology created!',
+      })
+    })
+  })
+
+  describe('CREATE_ONTOLOGY_FAIL', () => {
+    let state
+    let action
+    let result
+    let error = new Error()
+    beforeEach(() => {
+      state = cloneDeep(initialState)
+      action = {
+        type: CREATE_ONTOLOGY_FAIL,
+        error
+      }
+      result = reducer(state, action)
+    })
+
+    it('changes status', () => {
+      expect(result.statuses.creatingOntology).to.deep.equal({
+        run: false,
+        error,
+        successMessage: '',
+      })
+    })
+  })
+
   describe('selectors', () => {
     let state
     let store
     let list
+    let statuses
     beforeEach(() => {
       list = {
         'new': {
@@ -74,13 +150,22 @@ describe('instance reducer and selectors', () => {
         },
       }
 
+      statuses = {
+        creatingOntology: {
+          run: false,
+          error: null,
+          successMessage: '',
+        }
+      }
+
       store = {
         list,
         selected: 'new',
+        statuses,
       }
 
       state = {
-        instance: store
+        instance: store,
       }
     })
 
@@ -118,6 +203,18 @@ describe('instance reducer and selectors', () => {
       state = cloneDeep(state)
       state.instance.selected = null
       expect(getSelected(state)).to.equal(null)
+    })
+
+    it('getStatuses returns all statuses', () => {
+      expect(getStatuses(state)).to.deep.equal(statuses)
+    })
+
+    it('getCreatingOntologyStatus returns status object', () => {
+      expect(getCreatingOntologyStatus(state)).to.deep.equal({
+        run: false,
+        error: null,
+        successMessage: '',
+      })
     })
   })
 })

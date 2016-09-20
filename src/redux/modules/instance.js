@@ -16,6 +16,13 @@ export const CREATE_ONTOLOGY_FAIL = 'instance/CREATE_ONTOLOGY_FAIL'
 export let initialState = {
   list: {},
   selected: null,
+  statuses: {
+    creatingOntology: {
+      run: false,
+      error: null,
+      successMessage: '',
+    },
+  },
 }
 
 export let handlers = {
@@ -32,7 +39,49 @@ export let handlers = {
       },
       selected: 'new',
     }
-  }
+  },
+
+  [CREATE_ONTOLOGY](state) {
+    return {
+      ...state,
+      statuses: {
+        ...state.statuses,
+        creatingOntology: {
+          run: true,
+          error: null,
+          successMessage: '',
+        },
+      },
+    }
+  },
+
+  [CREATE_ONTOLOGY_SUCCESS](state) {
+    return {
+      ...state,
+      statuses: {
+        ...state.statuses,
+        creatingOntology: {
+          run: false,
+          error: null,
+          successMessage: 'Ontology created!',
+        },
+      },
+    }
+  },
+
+  [CREATE_ONTOLOGY_FAIL](state, { error }) {
+    return {
+      ...state,
+      statuses: {
+        ...state.statuses,
+        creatingOntology: {
+          error,
+          run: false,
+          successMessage: '',
+        },
+      },
+    }
+  },
 }
 
 export default createReducer(initialState, handlers)
@@ -60,6 +109,16 @@ export let getSelected = selector(
 export let getSelectedContent = selector(
   getSelected,
   selected => selected ? selected.content : null
+)
+
+export let getStatuses = selector(
+  getStore,
+  store => store.statuses
+)
+
+export let getCreatingOntologyStatus = selector(
+  getStatuses,
+  statuses => statuses.creatingOntology
 )
 
 
