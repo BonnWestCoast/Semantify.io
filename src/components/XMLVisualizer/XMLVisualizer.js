@@ -12,14 +12,22 @@ export default class XMLVisualizer extends Component {
     xml: PropTypes.string,
   }
 
+  state = {
+    error: null,
+  }
+
   componentDidMount() {
     const { xml } = this.props
-    renderXML('.xml-div', xml, [], [])
+    try {
+      renderXML('.xml-div', xml, [], [])
+    } catch (err) {
+      this.setState({ error: 'Error while parsing XML' }) // eslint-disable-line
+    }
   }
 
   render() {
     return (
-      <div className="xml-div"></div>
+      <div className="xml-div">{this.state.error}</div>
     )
   }
 }
