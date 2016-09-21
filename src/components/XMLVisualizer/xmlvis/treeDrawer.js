@@ -18,7 +18,7 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
   let diagonal = d3.svg.diagonal()
     .projection(d => { return [d.y, d.x]; });
 
-  let svg = d3.select('body').append('svg')
+  let svg = d3.select(selectString).append('svg')
     .attr('width', width + margin.right + margin.left)
     .attr('height', height + margin.top + margin.bottom)
   .append('g')
@@ -156,6 +156,9 @@ export function drawTree(selectString, treeData, maxDepth, maxWidth) {
   // Enter any new links at the parent's previous position.
   link.enter().insert('path', 'g')
     .attr('class', 'link')
+    .attr('fill', 'none')
+    .attr('stroke', '#ccc')
+    .attr('stroke-width', '1.5px')
     .attr('d', d => {
       let o = {x: source.x0, y: source.y0};
       return diagonal({source: o, target: o});

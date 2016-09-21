@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 import { asyncConnect } from 'redux-async-connect'
 
 // components
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
-import { FileUploader } from 'components'
+import { Button, DropdownButton, MenuItem, Modal } from 'react-bootstrap'
+import { FileUploader, XMLVisualizer } from 'components'
 
 // actions
 import {
@@ -67,8 +67,9 @@ export default class Schema extends Component {
     router: React.PropTypes.object // injecting react-router
   }
 
-  // visualise button handler
-  visualize() {}
+  state = {
+    showModal: false
+  }
 
   // go to next step button handler
   nextStep() {
@@ -88,6 +89,35 @@ export default class Schema extends Component {
 
   nextStepDisabled() {
     return !this.props.selectedSchema && !this.props.creatingNewSchema
+  }
+
+  /**
+   * Show modal with XML visualization
+   */
+  showModal() {
+    this.setState({ showModal: true })
+  }
+
+  closeModal() {
+    this.setState({ showModal: false })
+  }
+
+  renderModal() {
+    return (
+      <Modal show={this.state.showModal} onHide={::this.closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ontology visualization</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div id="visualizer">
+            <XMLVisualizer xml={this.props.inputContent}/>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={::this.closeModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    )
   }
 
   render() {
@@ -119,7 +149,7 @@ export default class Schema extends Component {
             }
           </DropdownButton>
           <FileUploader onChange={::this.editSchema}/>
-          <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
+          <Button bsStyle="primary" style={buttonStyle} onClick={::this.showModal}>
             Visualize
           </Button>
         </div>
@@ -132,6 +162,7 @@ export default class Schema extends Component {
             Next step
           </Button>
         </div>
+        {this.renderModal()}
       </div>
     )
   }

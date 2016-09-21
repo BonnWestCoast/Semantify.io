@@ -9,7 +9,7 @@ import { renderXML } from './xmlvis/renderXML'
 
 export default class XMLVisualizer extends Component {
   static propTypes = {
-    xml: PropTypes.strings,
+    xml: PropTypes.string,
   }
 
   componentDidMount() {
