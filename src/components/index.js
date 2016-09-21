@@ -15,3 +15,4 @@ export UploadSchemaForm from './UploadSchemaForm/UploadSchemaForm';
 export ActivableLink from './ActivableLink/ActivableLink'
 export OntologyList from './OntologyList/OntologyList'
 export FileUploader from './FileUploader/FileUploader'
+export XMLVisualizer from './XMLVisualizer/XMLVisualizer'
