@@ -6,8 +6,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // components
-import { Button, Input, Alert } from 'react-bootstrap'
-import { FileUploader } from 'components'
+import { Button, Input, Alert, Modal } from 'react-bootstrap'
+import { FileUploader, XMLVisualizer } from 'components'
 import Spinner from 'react-spinkit'
 
 // actions
@@ -71,8 +71,16 @@ export default class Schema extends Component {
     this.props.instanceUserInput(value)
   }
 
-  // visualise button handler
-  visualize() {}
+  /**
+   * Show modal with XML visualization
+   */
+  showModal() {
+    this.setState({ showModal: true })
+  }
+
+  closeModal() {
+    this.setState({ showModal: false })
+  }
 
   // semantify button handler
   semantify() {
@@ -100,6 +108,24 @@ export default class Schema extends Component {
     return null
   }
 
+  renderModal() {
+    return (
+      <Modal show={this.state.showModal} onHide={::this.closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ontology visualization</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div id="visualizer">
+            <XMLVisualizer xml={this.props.inputContent}/>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={::this.closeModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    )
+  }
+
   render() {
     let { inputContent, creatingOntologyStatus } = this.props
 
@@ -112,7 +138,7 @@ export default class Schema extends Component {
           onChange={event => this.editInstance(event.target.value)}/>
         <div style={{marginTop: '1em'}}>
           <FileUploader onChange={::this.editInstance}/>
-          <Button bsStyle="primary" style={buttonStyle} onClick={::this.visualize}>
+          <Button bsStyle="primary" style={buttonStyle} onClick={::this.showModal}>
             Visualize
           </Button>
         </div>
@@ -136,6 +162,7 @@ export default class Schema extends Component {
           </div>
         </div>
         {this.renderAlert()}
+        {this.renderModal()}
       </div>
     )
   }
