@@ -4,7 +4,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {runSparql} from 'redux/modules/ontologySparql';
+import {runSparql, changeCurrentQuery} from 'redux/modules/ontologySparql';
 
 /**
  * Component for sending sparql query to server
@@ -12,15 +12,18 @@ import {runSparql} from 'redux/modules/ontologySparql';
 @connect(
   state => ({
     chosenOntology: state.ontologyList.chosenOntology,
-    result: state.ontologySparql.data
+    result: state.ontologySparql.data,
+    query: state.ontologySparql.query
   }),
-  {runSparql}
+  {runSparql, changeCurrentQuery}
 )
 export default class OntologySparql extends Component {
   static propTypes = {
     chosenOntology: PropTypes.string,
     result: PropTypes.object,
-    runSparql: PropTypes.func
+    runSparql: PropTypes.func,
+    query: PropTypes.string,
+    changeCurrentQuery: PropTypes.func
   };
 
   run = (event) => {
@@ -38,11 +41,22 @@ export default class OntologySparql extends Component {
       width: 'calc(100% - 12px)'
     };
 
+    let labelStyle = {
+      paddingTop: '5px'
+    };
+
     return (
-      <form>
+      <div>
         <div className="form-group">
-          <label htmlFor="sparqlTextarea">SPARQL Query</label>
-          <textarea className="form-control" id="sparql" rows="6" ref="query"/>
+          <label htmlFor="sparqlTextarea" style={labelStyle}>SPARQL Query</label>
+          <textarea className="form-control" id="sparql"
+                    rows="6"
+                    ref="query"
+                    style={{width: 'calc(100% - 12px)'}}
+                    value={this.props.query}
+                    onChange={(event) => {this.props.changeCurrentQuery(event.target.value)}}
+          />
+          <label style={labelStyle}>SPARQL Result</label>
           <textarea className="form-control" id="sparql-res"
                     rows="6"
                     ref="query-res"
@@ -52,7 +66,7 @@ export default class OntologySparql extends Component {
         </div>
         <button type="submit" className="btn btn-primary"
                 onClick={this.run}>Run</button>
-      </form>
+      </div>
     )
   }
 }
