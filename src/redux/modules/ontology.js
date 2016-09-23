@@ -8,6 +8,7 @@ const LOAD_FAIL = 'ontology/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
+  loading: false,
   data: {
     message: ''
   }

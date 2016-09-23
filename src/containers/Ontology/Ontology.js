@@ -12,6 +12,7 @@ import {clear} from '../../redux/modules/visualizer';
 import {Button, Modal} from 'react-bootstrap';
 import Visualizer from '../Visualizer/Visualizer';
 import { loadOntology } from '../../redux/modules/visualizer';
+import Spinner from 'react-spinkit';
 
 /**
  * Component for showing ontology page
@@ -25,7 +26,8 @@ import { loadOntology } from '../../redux/modules/visualizer';
   state => ({
     ontology: state.ontology,
     dataList: state.ontologyList.data,
-    chosenOntology: state.ontologyList.chosenOntology
+    chosenOntology: state.ontologyList.chosenOntology,
+    isLoading: state.ontology.loading
   }),
   {loadOntologyList, clear, loadOntology}
 )
@@ -36,7 +38,8 @@ export default class Ontology extends Component {
     chosenOntology: PropTypes.string,
     loadOntologyList: PropTypes.func.isRequired,
     clear: PropTypes.func.isRequired,
-    loadOntology: PropTypes.func.isRequired
+    loadOntology: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool
   };
 
   constructor(props) {
@@ -81,6 +84,10 @@ export default class Ontology extends Component {
             <Button bsStyle="primary" onClick={this.open}>
               Visualize
             </Button>
+            {
+              this.props.isLoading &&
+              <Spinner spinnerName="cube-grid" />
+            }
           </div>
         </div>
         <div className="row">
