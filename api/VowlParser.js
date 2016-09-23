@@ -5,21 +5,20 @@ const _ = require('lodash');
 import Ontology from './Ontology';
 
 /**
- * Class for parsing vowl format json file
- * That can be got from Java OWL2VOWL library
+ * Class for parsing owl format json file
  * To vis.js library format for visualization
  */
 export default class VowlParser {
   /**
-   * Parse vowl to vis.js format
-   * @param  {Object} vowlJson [vowl json object]
-   * @return {Object}          [vis.js format object]
-   */
-  parse(ontology, callback) {
+   * Parse ontology to vis.js format
+   * @param ontology
+   * @param cb
+     */
+  parse(ontology, cb) {
     rdfstore.create((err, store) => {
       store.load('text/turtle', ontology, 'graph', (err, results) => {
         if (err) {
-          console.log('Error loading file in rdfstore');
+          console.log('Error loading file in rdfstore: ' + err);
         } else {
           store.graph('graph', (err, graph) => {
             if (err) {
@@ -43,7 +42,7 @@ export default class VowlParser {
                   // mapping to - from (object - subject)
                   toFromLookup: ont.toFromLookup
                 };
-                callback(finalObj);
+                cb(finalObj);
               }
             }
           });

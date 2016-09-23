@@ -56,10 +56,14 @@ export function loadXML() {
   };
 }
 
-export function loadOntology() {
+export function loadOntology(ontologyId) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/visualizer/loadOntology')
+    promise: (client) => client.post('/visualizer/loadOntology/', {
+      data: {
+        ontologyId: ontologyId
+      }
+    })
   };
 }
 

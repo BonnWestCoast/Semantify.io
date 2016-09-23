@@ -2,7 +2,7 @@ import VowlParser from '../VowlParser';
 import {expect} from 'chai';
 const fs = require('fs');
 
-describe('parseVowl', () => {
+describe('parseVowl', function() {
   it('parses vowl and creates ontologies', () => {
     const parser = new VowlParser();
     const fileName = './../../fixtures/owl/ontologyFile.owl';

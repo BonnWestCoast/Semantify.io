@@ -22,13 +22,18 @@ import { loadOntology } from '../../redux/modules/visualizer';
   }
 }])
 @connect(
-  state => ({ontology: state.ontology, dataList: state.ontologyList.data}),
+  state => ({
+    ontology: state.ontology,
+    dataList: state.ontologyList.data,
+    chosenOntology: state.ontologyList.chosenOntology
+  }),
   {loadOntologyList, clear, loadOntology}
 )
 export default class Ontology extends Component {
   static propTypes = {
     ontology: PropTypes.object,
     dataList: PropTypes.object,
+    chosenOntology: PropTypes.string,
     loadOntologyList: PropTypes.func.isRequired,
     clear: PropTypes.func.isRequired,
     loadOntology: PropTypes.func.isRequired
@@ -50,7 +55,7 @@ export default class Ontology extends Component {
   };
 
   open = () => {
-    this.props.loadOntology();
+    this.props.loadOntology(this.props.chosenOntology);
     this.setState({ showModal: true });
   };
 
