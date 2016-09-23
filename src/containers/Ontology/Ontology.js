@@ -94,9 +94,9 @@ export default class Ontology extends Component {
         <div className="row">
           <OntologySparql />
         </div>
-        <Modal show={this.state.showModal} onHide={this.close}>
+        <Modal show={this.state.showModal} onHide={this.close} bsSize="large" aria-labelledby="contained-modal-title-lg">
           <Modal.Header closeButton>
-            <Modal.Title>Ontology visualization</Modal.Title>
+            <Modal.Title id="contained-modal-title-lg">Ontology visualization</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div id="visualizer">

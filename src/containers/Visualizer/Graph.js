@@ -13,8 +13,7 @@ export default class Graph extends Component {
 
   static defaultProps = {
     graph: {},
-    identifier: 'graph',
-    style: {width: '100%', height: '1200px'}
+    identifier: 'graph'
   };
 
   state = {
@@ -115,7 +114,7 @@ export default class Graph extends Component {
     const container = document.getElementById(this.props.identifier);
     const options = {
       autoResize: true,
-      height: '100%',
+      height: screen.availHeight.toString() + 'px',
       width: '100%',
       clickToUse: false,
       edges: {
@@ -136,6 +135,10 @@ export default class Graph extends Component {
           direction: 'UD',        // UD, DU, LR, RL
           sortMethod: 'hubsize'   // hubsize, directed
         }
+      },
+      interaction: {
+        navigationButtons: true,
+        keyboard: true
       }
     };
 
@@ -143,10 +146,11 @@ export default class Graph extends Component {
   };
 
   render() {
-    const {identifier, style} = this.props;
-    console.log('id: ' + identifier);
-    console.log('style: ' + style);
-
+    const {identifier} = this.props;
+    const style = {
+      width: '100%',
+      height: window.screen.availHeight + 'px'
+    };
     return (
       <div
         onDoubleClick={this.changeMode.bind(this)}
