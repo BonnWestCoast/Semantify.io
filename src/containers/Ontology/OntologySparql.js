@@ -44,8 +44,6 @@ export default class OntologySparql extends Component {
       width: 'calc(100% - 12px)'
     };
 
-    let labelStyle = {}
-
     return (
       <div>
         <div className="form-group">
