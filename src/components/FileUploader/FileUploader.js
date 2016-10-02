@@ -42,7 +42,7 @@ export default class FileUploader extends Component {
 
     return (
       <div style={{display: 'inline-block'}}>
-        <input type="file" onChange={::this.fileUpload} style={inputStyle} name="file" id="file"/>
+        <input type="file" onChange={::this.fileUpload} style={inputStyle} name="file" id="file" accept=".xsd,.xml"/>
         <label htmlFor="file" style={inputLabelStyle} className="btn btn-primary">{labelText}</label>
       </div>
     )
