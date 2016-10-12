@@ -63,6 +63,9 @@ export default class OntologySparql extends Component {
                     style={CurrentSnipTextAreaSty}
           />
         </div>
+        <div>
+            {this.props.result.stats}
+        </div>
         <div style={{display: 'flex'}}>
           <button type="submit" className="btn btn-primary"
                   onClick={this.run} style={{marginRight: '5px'}}>Run</button>
