@@ -80,18 +80,7 @@ export default class App extends Component {
 
           <Navbar.Collapse>
             <Nav navbar>
-              {user &&
-                <LinkContainer to="/uploadSchema">
-                  <NavItem>Upload a Schema</NavItem>
-                </LinkContainer>
-              }
               { user &&
-              <LinkContainer to="/xmlVisualizer">
-                <NavItem>Visualize XML</NavItem>
-              </LinkContainer>
-              }
-              {
-                user &&
               <LinkContainer to="/upload">
                 <NavItem>Upload</NavItem>
               </LinkContainer>
@@ -100,12 +89,6 @@ export default class App extends Component {
               <LinkContainer to="/ontology">
                 <NavItem>Ontology</NavItem>
               </LinkContainer>
-              }
-              {
-                user &&
-                <LinkContainer to="/schemasList">
-                  <NavItem>Schemas List</NavItem>
-                </LinkContainer>
               }
               {!user &&
               <LinkContainer to="/login">
