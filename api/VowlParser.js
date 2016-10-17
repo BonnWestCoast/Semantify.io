@@ -92,7 +92,7 @@ export default class VowlParser {
       return dict;
     }, {});
 
-    return _.values(nodeDict);
+    return _.values(nodeDict).slice(1, 200);
   }
 
   /**
@@ -160,6 +160,13 @@ export default class VowlParser {
 
       ont.addFilter(item.from, item.to, item.label, item.arrows, item.filter);
     });
+
+    console.log('cl: ' + cl,
+      'ind' + ind,
+      'lit' + lit,
+      'bn' + bn,
+      'dp' + dp,
+      'op' + op);
 
     return ont.filter;
   }
