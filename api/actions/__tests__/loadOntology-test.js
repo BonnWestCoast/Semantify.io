@@ -7,7 +7,13 @@ import loadOntology from '../visualizer/loadOntology';
 
 describe('loadOntology', () => {
   it('loads ontologies with correct structure', () => {
-    return loadOntology().then(data => {
+    const req = {
+      body: {
+        ontologyId: 'new'
+      }
+    };
+    
+    return loadOntology(req).then(data => {
       let ontology = data.message;
       expect(ontology).have.keys(['edges', 'root', 'toFromLookup']);
     });

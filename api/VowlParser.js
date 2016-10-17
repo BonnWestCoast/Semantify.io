@@ -24,6 +24,7 @@ export default class VowlParser {
             if (err) {
               console.log('Error loading the graph', err);
             } else {
+
               const triples = graph.toArray();
 
               if (triples.length !== 0) {
@@ -42,6 +43,7 @@ export default class VowlParser {
                   // mapping to - from (object - subject)
                   toFromLookup: ont.toFromLookup
                 };
+
                 cb(finalObj);
               }
             }
@@ -74,33 +76,23 @@ export default class VowlParser {
   getNodes(ont) {
     const nodes = ont.nodes;
 
-    // get subjects from all nodes
-    const triples = _.map(nodes, (item) => {
-      return {
+    let nodeDict = nodes.reduce(function(dict, item, i) {
+      let subj = {
         id: item.subject.trim(),
         label: item.subject.trim()
       };
-    });
-
-    // get objects from all nodes
-    const objects = _.map(nodes, (item) => {
-      return {
+      let obj = {
         id: item.object.trim(),
         label: item.object.trim()
       };
-    });
 
-    // combine triples and objects together
-    const triplesAndObjects = _.union(triples, objects);
+      dict[subj.id] = subj;
+      dict[obj.id] = obj;
 
-    return _.filter(triplesAndObjects, (item, index) => {
-      for (index += 1; index < triplesAndObjects.length; index += 1) {
-        if (_.isEqual(item, triplesAndObjects[index])) {
-          return false;
-        }
-      }
-      return true;
-    });
+      return dict;
+    }, {});
+
+    return _.values(nodeDict);
   }
 
   /**

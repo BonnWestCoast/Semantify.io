@@ -13,12 +13,10 @@ export default function loadOntology(req) {
       .get('http://localhost:8080/rest/ontologies/visualizer/' + id)
       .end(function(err, res){
         if (err ||!res.ok) {
-          console.log(res.body.data);
           reject('Error when loading visualizer: ' + err);
         }
         try {
           let ontology = res.body.data.toString();
-
           parser.parse(ontology,
             (data) => {
               resolve({
