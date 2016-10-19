@@ -3,7 +3,7 @@ A Web-based tool to semantify / ontologize the knowledge of a standards with sem
 
 #Docker
 1. Install docker from: https://www.docker.com/
-2. Run in console: `docker run -itd --name semantify akorovin/semantify.io`. 
+2. Run in console: `$ docker run -itd --name semantify -p 3000:3000 -p 3001:3001 -p 3030:3030 akorovin/semantify.io`. 
 it will download docker image and build it on your host. And also it will build github project and run it on node.js.
 3. website should be accessible from `localhost:3000`
 
