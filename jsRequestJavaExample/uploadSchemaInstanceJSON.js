@@ -6,7 +6,7 @@ var fs = require('fs');
 var schema = fs.readFileSync('opc_ua/UANodeSet.xsd', 'utf8');
 var instance = fs.readFileSync('opc_ua/Opc.Ua.NodeSet2.test.xml', 'utf8');
 
-var url = 'http://localhost:8080/rest/ontologies'
+var url = 'http://localhost:8080/rest/rest/ontologies'
 
 var requestString = {
     "schema": schema,

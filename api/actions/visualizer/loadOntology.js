@@ -10,7 +10,7 @@ export default function loadOntology(req) {
     const id = req.body.ontologyId;
     const parser = new VowlParser();
     request
-      .get('http://localhost:8080/rest/ontologies/visualizer/' + id)
+      .get('http://localhost:8080/rest/rest/ontologies/visualizer/' + id)
       .end(function(err, res){
         if (err ||!res.ok) {
           reject('Error when loading visualizer: ' + err);

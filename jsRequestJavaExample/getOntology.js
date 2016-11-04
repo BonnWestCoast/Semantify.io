@@ -3,7 +3,7 @@
 
 var request = require('request');
 var fs = require('fs');
-var url = 'http://localhost:8080/rest/ontologies/abox'
+var url = 'http://localhost:8080/rest/rest/ontologies/abox'
 
 req = request.get(
         url,

@@ -29,7 +29,7 @@ const proxy = httpProxy.createProxyServer({
   ws: true
 });
 
-const crosAPIUrl = 'http://localhost:8080/rest';
+const crosAPIUrl = 'http://localhost:8080/rest/rest';
 const crosProxy = httpProxy.createProxyServer({
   target: crosAPIUrl
 });
